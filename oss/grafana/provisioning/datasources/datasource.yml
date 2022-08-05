@@ -8,7 +8,7 @@ deleteDatasources:
     orgId: 1
 
 datasources:
- - name: Loki-qryn
+  - name: Loki-qryn
     type: loki
     access: proxy
     url: http://qryn:3100
@@ -23,7 +23,7 @@ datasources:
       # - matcherRegex: "traceID=(\\w+)"
       #   name: TraceID
       #   url: "http://qryn:3100/traces/1/${__value.raw}"
-- name: Tempo-qryn
+ - name: Tempo-qryn
     type: tempo
     access: proxy
     uid: tempo
