@@ -25,14 +25,16 @@ services:
     container_name: clickhouse-server
     volumes:
       - clickhouse_data:/var/lib/clickhouse
+    environment:
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_PASSWORD=qryn
     ports:
       - 8123:8123
 
   qryn-writer:
-    image: ghcr.io/metrico/qryn-writer:latest
+    image: ghcr.io/metrico/qryn-writer:1.9.17
     container_name: qryn-writer
     volumes:
-      - grafana_data:/var/lib/grafana
       - ./writer/config.json:/usr/local/cloki-writer/etc/cloki-writer.json
     restart: unless-stopped
     expose:
@@ -48,7 +50,8 @@ services:
   qryn-go:
     image: ghcr.io/metrico/qryn-go:latest
     container_name: qryn-go
-    ./reader/config.json:/usr/local/clokigo/etc/cloki-go.json
+    volumes:
+      - ./reader/config.json:/usr/local/clokigo/etc/cloki-go.json
     restart: unless-stopped
     expose:
       - 3200

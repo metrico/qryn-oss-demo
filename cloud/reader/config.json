@@ -4,7 +4,7 @@
       "help": "Settings for Clickhouse Database (data)",
       "user": "default",
       "node": "clickhouse",
-      "pass": "",
+      "pass": "qryn",
       "name": "qryn",
       "host": "clickhouse-server",
       "port": 9000,
@@ -42,11 +42,11 @@
     "connect_timeout": 10
   },
   "log_settings": {
-    "path": "/usr/local/cloki-reader/log",
+    "path": "/usr/local/qryn-reader/log",
     "level": "debug",
     "stdout": true,
     "json": true,
-    "name": "clokireader.log",
+    "name": "qryn-reader.log",
     "syslog": true,
     "syslog_level": "LOG_INFO",
     "syslog_uri": "",

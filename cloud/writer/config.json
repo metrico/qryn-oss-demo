@@ -3,12 +3,14 @@
     {
       "help": "Settings for Clickhouse Database (data)",
       "user": "default",
-      "node": "local",
-      "pass": "",
+      "node": "clickhouse",
+      "pass": "qryn",
       "name": "qryn",
-      "table_prefix": "",
-      "host": "clickhouse-server",
+      "host": "172.24.0.3",
       "_port": "9000",
+      "port": 9000,
+      "http_port": 8123,
+      "table_prefix": "",
       "_read_timeout": 30,
       "_write_timeout": 30,
       "strategy": "failover",
@@ -17,7 +19,7 @@
     }
   ],
   "http_settings": {
-    "help": "Settings for the cloki-writer Webapp Server",
+    "help": "Settings for the QRYN-writer Webapp Server",
     "host": "0.0.0.0",
     "port": 3101,
     "prefork": false,
@@ -25,7 +27,7 @@
     "gzip": true,
     "gzip_static": true,
     "api_prefix": "loki",
-    "debug":true,
+    "debug": true,
     "websocket": {
       "enable": false
     }
@@ -34,7 +36,7 @@
     "help": "SSL settings for cloki-writer Webapp Server",
     "enable": false,
     "host": "0.0.0.0",
-    "port": 3200,
+    "port": 3444,
     "min-tls-version": "TLS1.2",
     "max-tls-version": "TLS1.4",
     "http_redirect": false,
@@ -51,14 +53,14 @@
     "stdout": true,
     "json": true,
     "name": "qryn-writer.log",
-    "syslog": false,
+    "syslog": true,
     "syslog_level": "LOG_INFO",
     "syslog_uri": "",
     "max_age_days": 7,
     "rotation_hours": 24
   },
   "system_settings": {
-    "help": "Settings for cloki-writer logs",
+    "help": "Settings for qryn-writer logs",
     "hostname": "home",
     "url": "http://127.0.0.1",
     "hash_type": "bernstein",
