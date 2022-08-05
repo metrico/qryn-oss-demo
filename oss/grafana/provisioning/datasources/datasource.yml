@@ -10,7 +10,6 @@ deleteDatasources:
 datasources:
  - name: Loki-qryn
     type: loki
-    uid: qryn
     access: proxy
     url: http://qryn:3100
     editable: true
@@ -33,7 +32,7 @@ datasources:
       nodeGraph:
         enabled: true
       tracesToLogs:
-        datasourceUid: qryn
+        datasourceUid: loki
         filterByTraceID: false
         spanEndTimeShift: "500ms"
         spanStartTimeShift: "-500ms"
