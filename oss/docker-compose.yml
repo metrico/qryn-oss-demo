@@ -25,8 +25,10 @@ services:
     container_name: clickhouse-server
     volumes:
       - clickhouse_data:/var/lib/clickhouse
+      - ./clickhouse/metric_log.xml:/etc/clickhouse-server/config.d/metric_log.xml
     ports:
       - 8123:8123
+      - 9000:9000
 
   qryn:
     image: qxip/qryn:latest
