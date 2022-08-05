@@ -11,6 +11,10 @@ Docker Compose to start
 
 ## To Start
 
+docker login ghcr.io
+username: XXXXX
+password: token with read:package permission enabled
+
 docker compose up -d
 
 ## Ports

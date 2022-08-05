@@ -29,7 +29,7 @@ services:
       - 8123:8123
 
   qryn-writer:
-    image: ghcr.io/qxip/qryn-writer:latest
+    image: ghcr.io/metrico/qryn-writer:latest
     container_name: qryn-writer
     restart: unless-stopped
     expose:
@@ -43,7 +43,7 @@ services:
       - clickhouse-server
 
   qryn-go:
-    image: ghcr.io/qxip/qryn-go:latest
+    image: ghcr.io/metrico/qryn-go:latest
     container_name: qryn-go
     restart: unless-stopped
     expose:
@@ -56,20 +56,20 @@ services:
     depends_on:
       - clickhouse-server
 
-  qryn-view:
-    image: qxip/qryn-view:latest
-    container_name: qryn-view
-    restart: unless-stopped
-    expose:
-      - 80
-    ports:
-      - "80:80"
-    environment:
-      - CLICKHOUSE_SERVER=clickhouse-server
-      - DEBUG=true
-    depends_on:
-      - clickhouse-server
-      - qryn-go
+  #qryn-view:
+  #  image: metrico/qryn-view:latest
+  #  container_name: qryn-view
+  #  restart: unless-stopped
+  #  expose:
+  #    - 80
+  #  ports:
+  #    - "80:80"
+  #  environment:
+  #    - CLICKHOUSE_SERVER=clickhouse-server
+  #    - DEBUG=true
+  #  depends_on:
+  #    - clickhouse-server
+  #    - qryn-go
 
   pastash:
     image: qxip/pastash-loki
