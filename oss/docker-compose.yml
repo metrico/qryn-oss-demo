@@ -16,9 +16,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_EXPLORE_ENABLED=true
-      - GF_INSTALL_PLUGINS="vertamedia-clickhouse-datasource"
       - GF_ALERTING_ENABLED=true
-      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=="vertamedia-clickhouse-datasource"
+      - GF_UNIFIED_ALERTING_ENABLED=true
     restart: unless-stopped
     ports:
       - 3000:3000
@@ -30,8 +29,8 @@ services:
     container_name: clickhouse-server
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/metric_log.xml:/etc/clickhouse-server/config.d/metric_log.xml
-      - ./docker/opentelemetry_zipkin.sql:/docker-entrypoint-initdb.d/opentelemetry_zipkin.sql
+#      - ./clickhouse/metric_log.xml:/etc/clickhouse-server/config.d/metric_log.xml
+#      - ./docker/opentelemetry_zipkin.sql:/docker-entrypoint-initdb.d/opentelemetry_zipkin.sql
     ports:
       - 8123:8123
       - 9000:9000
