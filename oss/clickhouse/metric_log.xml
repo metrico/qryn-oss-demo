@@ -1,4 +1,4 @@
-<yandex>
+<clickhouse>
   <metric_log>
         <database>system</database>
         <table>metric_log</table>
@@ -6,16 +6,6 @@
         <collect_interval_milliseconds>1000</collect_interval_milliseconds>
   </metric_log>
   <opentelemetry_span_log>
-        <!--
-            The default table creation code is insufficient, this <engine> spec
-            is a workaround. There is no 'event_time' for this log, but two times,
-            start and finish. It is sorted by finish time, to avoid inserting
-            data too far away in the past (probably we can sometimes insert a span
-            that is seconds earlier than the last span in the table, due to a race
-            between several spans inserted in parallel). This gives the spans a
-            global order that we can use to e.g. retry insertion into some external
-            system.
-        -->
         <engine>
             engine MergeTree
             partition by toYYYYMM(finish_date)
@@ -39,4 +29,4 @@
         <opentelemetry_span_log remove="1"/>
         <zookeeper_log remove="1"/>
     -->
-</yandex>
+</clickhouse>
