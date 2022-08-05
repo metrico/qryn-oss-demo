@@ -18,7 +18,7 @@ services:
       - GF_EXPLORE_ENABLED=true
       - GF_INSTALL_PLUGINS="vertamedia-clickhouse-datasource"
       - GF_ALERTING_ENABLED=true
-      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS="vertamedia-clickhouse-datasource"
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=="vertamedia-clickhouse-datasource"
     restart: unless-stopped
     expose:
       - 3000
@@ -31,7 +31,7 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - ./clickhouse/metric_log.xml:/etc/clickhouse-server/config.d/metric_log.xml
-      - ./docker/init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
+      - ./docker/opentelemetry_zipkin.sql:/docker-entrypoint-initdb.d/opentelemetry_zipkin.sql
     ports:
       - 8123:8123
       - 9000:9000
