@@ -10,16 +10,19 @@ Docker Compose to start
  - QRYN-Go
 
 ## To Start
-
+```
 docker login ghcr.io
 username: XXXXX
 password: token with read:package permission enabled
-
+```
+```
 docker compose up -d
-
+```
 ## Ports
 
-Clickhouse exposes: 9000, 8123
-Grafana exposes: 3000
-QRYN-Writer exposes: 3101
-QRYN-Go exposes: 3200
+- clickhouse: 
+  - 9000, 8123
+- grafana: 
+  - 3000
+- qryn: 
+  - 3101, 3200
