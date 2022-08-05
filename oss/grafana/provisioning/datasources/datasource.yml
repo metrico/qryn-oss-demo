@@ -11,11 +11,12 @@ datasources:
   - name: Loki-qryn
     type: loki
     access: proxy
+    uid: loki
     url: http://qryn:3100
     editable: true
     jsonData:
       derivedFields:
-        - datasourceUid: Tempo
+        - datasourceUid: tempo
           matcherRegex: ".*/traces/(?\u003ctraceId\u003e.*)"
           name: "traceId"
           url: "${__value.raw}"

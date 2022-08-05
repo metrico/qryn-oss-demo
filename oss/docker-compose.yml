@@ -50,18 +50,18 @@ services:
       - "3100:3100"
     environment:
       - CLICKHOUSE_SERVER=clickhouse-server
-      - DEBUG=true
+      - DEBUG=false
     depends_on:
       - clickhouse-server
 
-  pastash:
-    image: qxip/pastash-loki
-    container_name: pastash
-    volumes:
-      - ./pastash/pastash.json:/config/loki.conf
-      - /var/log:/var/log:ro
-    depends_on:
-      - qryn
+#  pastash:
+#    image: qxip/pastash-loki
+#    container_name: pastash
+#    volumes:
+#      - ./pastash/pastash.conf:/config/loki.conf
+#      - /var/log:/var/log:ro
+#    depends_on:
+#      - qryn
 
   vector:
     image: timberio/vector:latest-alpine
