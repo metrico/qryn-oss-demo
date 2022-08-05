@@ -1,0 +1,30 @@
+# config file version
+apiVersion: 1
+
+deleteDatasources:
+  - name: Loki
+    orgId: 1
+  - name: Tempo
+    orgId: 1
+
+datasources:
+ - name: Loki
+    type: loki
+    access: proxy
+    url: http://cloki:3100
+    editable: true
+    jsonData:
+      derivedFields:
+        - datasourceUid: Tempo
+          matcherRegex: ".*/traces/(?\u003ctraceId\u003e.*)"
+          name: "traceId"
+          url: "${__value.raw}"
+      # Field with external link.
+      # - matcherRegex: "traceID=(\\w+)"
+      #   name: TraceID
+      #   url: "http://qryn:3100/traces/1/${__value.raw}"
+- name: Tempo
+  type: tempo
+  access: proxy
+  url: http://loki:3100
+  editable: true
