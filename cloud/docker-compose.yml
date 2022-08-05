@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.1'
 
 volumes:
     grafana_data: {}
@@ -42,7 +42,6 @@ services:
     container_name: qryn-writer
     volumes:
       - ./writer/config.json:/usr/local/cloki-writer/etc/cloki-writer.json
-    restart: unless-stopped
     expose:
       - 3101
     ports:
@@ -52,6 +51,11 @@ services:
       - DEBUG=true
     depends_on:
       - clickhouse-server
+    restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 10
+        window: 120s
 
   qryn-go:
     image: ghcr.io/metrico/qryn-go:latest
