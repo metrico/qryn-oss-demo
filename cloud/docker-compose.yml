@@ -47,9 +47,9 @@ services:
     container_name: qryn-go
     restart: unless-stopped
     expose:
-      - 3101
+      - 3200
     ports:
-      - "3101:3101"
+      - "3200:3200"
     environment:
       - CLICKHOUSE_SERVER=clickhouse-server
       - DEBUG=true
