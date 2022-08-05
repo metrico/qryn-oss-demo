@@ -16,7 +16,7 @@ source = '''
 [sinks.cloki_syslog]
 type="loki"
 inputs = ["parse_logs"]
-endpoint = "http://qryn:3100/loki/api/v1/push"
+endpoint = "http://qryn:3100"
 #tenant_id = "0"
 compression = "none"
 
