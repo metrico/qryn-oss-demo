@@ -31,6 +31,11 @@ services:
     ports:
       - 8123:8123
       - 9000:9000
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'localhost:8123/ping']
+      interval: 1s
+      timeout: 1s
+      retries: 30
 
   qryn-writer:
     image: ghcr.io/metrico/qryn-writer:1.9.17

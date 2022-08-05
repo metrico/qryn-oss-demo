@@ -8,8 +8,6 @@
       "name": "qryn",
       "host": "clickhouse-server",
       "_port": "9000",
-      "port": 9000,
-      "http_port": 8123,
       "table_prefix": "",
       "_read_timeout": 30,
       "_write_timeout": 30,
