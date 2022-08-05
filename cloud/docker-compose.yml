@@ -42,6 +42,7 @@ services:
     container_name: qryn-writer
     volumes:
       - ./writer/config.json:/usr/local/cloki-writer/etc/cloki-writer.json
+    restart: unless-stopped
     expose:
       - 3101
     ports:
@@ -55,11 +56,6 @@ services:
       - ./cloki-writer -config /usr/local/cloki-writer/etc/cloki-writer.json -initialize_db && /cloki-writer -config /usr/local/cloki-writer/etc/cloki-writer.json
     depends_on:
       - clickhouse-server
-    restart_policy:
-        condition: any
-        delay: 5s
-        max_attempts: 10
-        window: 120s
 
   qryn-go:
     image: ghcr.io/metrico/qryn-go:latest
