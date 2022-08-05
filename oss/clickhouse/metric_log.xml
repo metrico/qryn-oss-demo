@@ -14,6 +14,6 @@
         <database>system</database>
         <table>opentelemetry_span_log</table>
         <flush_interval_milliseconds>7500</flush_interval_milliseconds>
-    </opentelemetry_span_log>
-    <opentelemetry_start_trace_probability>1</opentelemetry_start_trace_probability>
+  </opentelemetry_span_log>
+  <opentelemetry_start_trace_probability>1</opentelemetry_start_trace_probability>
 </clickhouse>
