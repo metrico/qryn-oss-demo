@@ -18,7 +18,7 @@ services:
       - GF_EXPLORE_ENABLED=true
       - GF_INSTALL_PLUGINS="vertamedia-clickhouse-datasource"
       - GF_ALERTING_ENABLED=true
-      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS="vertamedia-clickhouse-datasource"
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=="vertamedia-clickhouse-datasource"
     restart: unless-stopped
     expose:
       - 3000
