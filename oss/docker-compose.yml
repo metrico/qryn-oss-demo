@@ -20,8 +20,8 @@ services:
       - GF_ALERTING_ENABLED=true
       - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=="vertamedia-clickhouse-datasource"
     restart: unless-stopped
-    expose:
-      - 3000
+    ports:
+      - 3000:3000
     depends_on:
       - clickhouse-server
 
@@ -63,7 +63,7 @@ services:
       - /var/log:/var/log:ro
     depends_on:
       - qryn
-      
+
   vector:
     image: timberio/vector:latest-alpine
     container_name: vector
