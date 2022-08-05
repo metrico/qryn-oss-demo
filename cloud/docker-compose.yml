@@ -1,0 +1,85 @@
+version: '2.1'
+
+volumes:
+    grafana_data: {}
+    clickhouse_data: {}
+
+services:
+  grafana:
+    image: grafana/grafana:master
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_EXPLORE_ENABLED=true
+    restart: unless-stopped
+    expose:
+      - 3000
+
+  clickhouse-server:
+    image: clickhouse/clickhouse-server
+    container_name: clickhouse-server
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    ports:
+      - 8123:8123
+
+  qryn-writer:
+    image: ghcr.io/qxip/qryn-writer:latest
+    container_name: qryn-writer
+    restart: unless-stopped
+    expose:
+      - 3101
+    ports:
+      - "3101:3101"
+    environment:
+      - CLICKHOUSE_SERVER=clickhouse-server
+      - DEBUG=true
+    depends_on:
+      - clickhouse-server
+
+  qryn-go:
+    image: ghcr.io/qxip/qryn-go:latest
+    container_name: qryn-go
+    restart: unless-stopped
+    expose:
+      - 3101
+    ports:
+      - "3101:3101"
+    environment:
+      - CLICKHOUSE_SERVER=clickhouse-server
+      - DEBUG=true
+    depends_on:
+      - clickhouse-server
+
+  qryn-view:
+    image: qxip/qryn-view:latest
+    container_name: qryn-view
+    restart: unless-stopped
+    expose:
+      - 80
+    ports:
+      - "80:80"
+    environment:
+      - CLICKHOUSE_SERVER=clickhouse-server
+      - DEBUG=true
+    depends_on:
+      - clickhouse-server
+      - qryn-go
+
+  pastash:
+    image: qxip/pastash-loki
+    container_name: pastash
+    volumes:
+      - ./pastash/pastash.json:/config/loki.conf
+      - /var/log:/var/log:ro
+
+  vector:
+    image: timberio/vector:latest-alpine
+    container_name: vector
+    volumes:
+      - ./vector/vector.toml:/etc/vector/vector.toml
