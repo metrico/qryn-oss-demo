@@ -46,7 +46,7 @@ services:
     image: qxip/pastash-loki
     container_name: pastash
     volumes:
-      - ./loki/pastash.json:/config/loki.conf
+      - ./pastash/pastash.json:/config/loki.conf
       - /var/log:/var/log:ro
       
   vector:
