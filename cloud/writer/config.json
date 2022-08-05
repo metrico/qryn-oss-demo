@@ -6,7 +6,7 @@
       "node": "clickhouse",
       "pass": "qryn",
       "name": "qryn",
-      "host": "172.24.0.3",
+      "host": "clickhouse-server",
       "_port": "9000",
       "port": 9000,
       "http_port": 8123,

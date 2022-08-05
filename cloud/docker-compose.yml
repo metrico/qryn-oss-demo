@@ -30,6 +30,7 @@ services:
       - CLICKHOUSE_PASSWORD=qryn
     ports:
       - 8123:8123
+      - 9000:9000
 
   qryn-writer:
     image: ghcr.io/metrico/qryn-writer:1.9.17
