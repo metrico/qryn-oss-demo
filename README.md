@@ -5,13 +5,7 @@ Containers and Recipes for Docker
 
 ## Overview
 
-- oss
+- `oss`
   - qryn-js stack
-    - qryn-js
-    - clickhouse-server
-    - grafana
-      - datasources
-    - vector
-    - pastash
-- cloud
+- `cloud`
   - qryn-go stack
