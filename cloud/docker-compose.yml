@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.1'
 
 volumes:
     grafana_data: {}
@@ -38,7 +38,7 @@ services:
       retries: 30
 
   qryn-writer:
-    image: ghcr.io/metrico/qryn-writer:1.9.17
+    image: ghcr.io/metrico/qryn-writer:latest
     container_name: qryn-writer
     volumes:
       - ./writer/config.json:/usr/local/cloki-writer/etc/cloki-writer.json
@@ -50,6 +50,10 @@ services:
     environment:
       - CLICKHOUSE_SERVER=clickhouse-server
       - DEBUG=true
+    command:
+      - sh
+      - -c
+      - ./cloki-writer -config /usr/local/cloki-writer/etc/cloki-writer.json -initialize_db && /cloki-writer -config /usr/local/cloki-writer/etc/cloki-writer.json
     depends_on:
       - clickhouse-server
 
