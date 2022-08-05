@@ -1,4 +1,4 @@
-version: '3.1'
+version: '2.1'
 
 volumes:
     grafana_data: {}
@@ -6,7 +6,7 @@ volumes:
 
 services:
   grafana:
-    image: grafana/grafana:master
+    image: grafana/grafana-oss:9.0.6
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
@@ -16,7 +16,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_EXPLORE_ENABLED=true
-      - GF_ALERTING_ENABLED=true
+      - GF_ALERTING_ENABLED=false
       - GF_UNIFIED_ALERTING_ENABLED=true
     restart: unless-stopped
     ports:
@@ -27,6 +27,7 @@ services:
   clickhouse-server:
     image: clickhouse/clickhouse-server
     container_name: clickhouse-server
+    restart: unless-stopped
     volumes:
       - clickhouse_data:/var/lib/clickhouse
 #      - ./clickhouse/metric_log.xml:/etc/clickhouse-server/config.d/metric_log.xml
@@ -35,7 +36,7 @@ services:
       - 8123:8123
       - 9000:9000
     healthcheck:
-      test: ['CMD', 'wget', '--spider', '-q', 'localhost:8123/ping']
+      test: ['CMD', 'wget', '--spider', '-q', '127.0.0.1:8123/ping']
       interval: 1s
       timeout: 1s
       retries: 30
@@ -50,23 +51,15 @@ services:
       - "3100:3100"
     environment:
       - CLICKHOUSE_SERVER=clickhouse-server
-      - DEBUG=false
     depends_on:
-      - clickhouse-server
-
-#  pastash:
-#    image: qxip/pastash-loki
-#    container_name: pastash
-#    volumes:
-#      - ./pastash/pastash.conf:/config/loki.conf
-#      - /var/log:/var/log:ro
-#    depends_on:
-#      - qryn
+       clickhouse-server:
+         condition: service_healthy
 
   vector:
     image: timberio/vector:latest-alpine
     container_name: vector
+    restart: unless-stopped
     volumes:
-      - ./vector/vector.toml:/etc/vector/vector.toml
+      - ./vector/vector.toml:/etc/vector/vector.toml:ro
     depends_on:
       - qryn
