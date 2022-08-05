@@ -1,3 +1,6 @@
+# qryn-go
+Containers and Recipes for Docker
+
 ## Overview
 
 Docker Compose to start
@@ -5,7 +8,6 @@ Docker Compose to start
  - Grafana
  - QRYN-Writer
  - QRYN-Go
- - QRYN-View
 
 ## To Start
 
