@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.1'
 
 volumes:
     grafana_data: {}
@@ -19,6 +19,8 @@ services:
     restart: unless-stopped
     expose:
       - 3000
+    depends_on:
+      - clickhouse-server
 
   clickhouse-server:
     image: clickhouse/clickhouse-server
@@ -26,9 +28,15 @@ services:
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - ./clickhouse/metric_log.xml:/etc/clickhouse-server/config.d/metric_log.xml
+      - ./docker/clickhouse_load.sh:/docker-entrypoint-initdb.d/clickhouse_load.sh
     ports:
       - 8123:8123
       - 9000:9000
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'localhost:8123/ping']
+      interval: 1s
+      timeout: 1s
+      retries: 30
 
   qryn:
     image: qxip/qryn:latest
@@ -50,9 +58,13 @@ services:
     volumes:
       - ./pastash/pastash.json:/config/loki.conf
       - /var/log:/var/log:ro
+    depends_on:
+      - qryn
       
   vector:
     image: timberio/vector:latest-alpine
     container_name: vector
     volumes:
       - ./vector/vector.toml:/etc/vector/vector.toml
+    depends_on:
+      - qryn
