@@ -16,9 +16,10 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_EXPLORE_ENABLED=true
-            - GF_INSTALL_PLUGINS="vertamedia-clickhouse-datasource"
-            - GF_ALERTING_ENABLED=true
-            - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=="vertamedia-clickhouse-datasource"
+      - GF_INSTALL_PLUGINS="grafana-clickhouse-datasource"
+      - GF_ALERTING_ENABLED=true
+      - GF_UNIFIED_ALERTING_ENABLED=true
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=="vertamedia-clickhouse-datasource"
     restart: unless-stopped
     ports:
       - 3000:3000
