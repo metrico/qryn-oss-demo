@@ -1,4 +1,4 @@
-version: '3.1'
+version: '2.1'
 
 volumes:
     grafana_data: {}
@@ -53,6 +53,7 @@ services:
       - 3101
     ports:
       - "3101:3101"
+      - "3100:3101"
     environment:
       - CLICKHOUSE_SERVER=clickhouse-server
       - DEBUG=true
@@ -93,13 +94,6 @@ services:
   #  depends_on:
   #    - clickhouse-server
   #    - qryn-go
-
-  pastash:
-    image: qxip/pastash-loki
-    container_name: pastash
-    volumes:
-      - ./pastash/pastash.json:/config/loki.conf
-      - /var/log:/var/log:ro
 
   vector:
     image: timberio/vector:latest-alpine
