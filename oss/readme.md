@@ -26,4 +26,9 @@ docker-compose up -d
 ```
 http://localhost:3000
 ```
-3) Browse to Explore and check out some logs
+3) Browse to Explore and check out some logs and traces
+
+![image](https://user-images.githubusercontent.com/1423657/183254312-b52811e5-f563-440e-84e4-8312714a4c9b.png)
+
+![image](https://user-images.githubusercontent.com/1423657/183254290-fac87747-51ce-4648-a7aa-073fdcdd6c10.png)
+
