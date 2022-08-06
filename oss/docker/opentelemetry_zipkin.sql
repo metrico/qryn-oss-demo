@@ -1,3 +1,7 @@
+SET opentelemetry_start_trace_probability = 1.0;
+SELECT 1;
+system flush logs;
+
 DROP TABLE IF EXISTS default.zipkin_spans;
 CREATE MATERIALIZED VIEW default.zipkin_spans
 ENGINE = URL('http://qryn:3100/tempo/api/push', 'JSONEachRow')
