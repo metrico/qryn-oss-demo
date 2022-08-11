@@ -37,4 +37,4 @@ datasources:
         filterByTraceID: false
         spanEndTimeShift: "500ms"
         spanStartTimeShift: "-500ms"
-        tags: ['job']
+        tags: ['job', 'session_id']
