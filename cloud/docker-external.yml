@@ -1,0 +1,96 @@
+version: "3.1"
+volumes:
+  grafana_data: {}
+services:
+
+  agent:
+    image: grafana/agent:main
+    ports:
+      - 4318:4318
+    volumes:
+      - "./agent/config.yaml:/etc/agent/agent.yaml"
+
+  dummy-server:
+    build: ./src
+    ports:
+      - 4000:4000
+      - 80:80
+    depends_on:
+      - qryn-writer
+
+  grafana:
+    image: grafana/grafana-oss:9.0.7
+    container_name: grafana
+    restart: on-failure
+    volumes:
+      - ./grafana/definitions:/var/lib/grafana/dashboards
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    ports:
+      - 3000:3000
+    environment:
+      - GF_FEATURE_TOGGLES_ENABLE=tempoSearch
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_EXPLORE_ENABLED=true
+      - GF_ALERTING_ENABLED=false
+      - GF_UNIFIED_ALERTING_ENABLED=true
+
+  qryn-writer:
+    image: ghcr.io/metrico/qryn-writer:latest
+    container_name: qryn-writer
+    volumes:
+      - ./writer/config.json:/usr/local/cloki-writer/etc/cloki-writer.json
+    restart: unless-stopped
+    expose:
+      - 3101
+      - 3100
+    ports:
+      - 3101:3100
+      - 3100:3100
+    environment:
+      - CLICKHOUSE_SERVER=clickhouse-server
+      - DEBUG=true
+      - QRYN_DATABASE_DATA_0_NAME=qryn
+      - QRYN_DATABASE_DATA_0_HOST=clickhouse.server.com
+      - QRYN_DATABASE_DATA_0_PORT=9440
+      - QRYN_DATABASE_DATA_0_DEBUG=true
+      - QRYN_DATABASE_DATA_0_USER=qryn
+      - QRYN_DATABASE_DATA_0_SECURE=true
+      - QRYN_DATABASE_DATA_0_PASS=qrynROCKS
+      - QRYN_DATABASE_DATA_0_ASYNC_INSERT=false
+      - QRYN_HTTP_SETTINGS_PORT=3100
+      - QRYN_SYSTEM_SETTINGS_DB_TIMER=0.5
+      - QRYN_SYSTEM_SETTINGS_DB_BULK=1000
+      - QRYN_LOG_SETTINGS_STDOUT=true
+    command:
+      - sh
+      - -c
+      - ./cloki-writer -initialize_db && ./cloki-writer
+
+  qryn-go:
+    image: ghcr.io/metrico/qryn-go:latest
+    container_name: qryn-go
+    volumes:
+      - ./reader/config.json:/usr/local/clokigo/etc/cloki-go.json
+    restart: unless-stopped
+    expose:
+      - 3200
+    ports:
+      - 3200:3200
+    environment:
+      - CLICKHOUSE_SERVER=clickhouse-server
+      - DEBUG=true
+      - QRYN_DATABASE_DATA_0_NAME=qryn
+      - QRYN_DATABASE_DATA_0_HOST=clickhouse.server.com
+      - QRYN_DATABASE_DATA_0_PORT=9440
+      - QRYN_DATABASE_DATA_0_HTTP_PORT=443
+      - QRYN_DATABASE_DATA_0_DEBUG=true
+      - QRYN_DATABASE_DATA_0_USER=qryn
+      - QRYN_DATABASE_DATA_0_PASS=qrynROCKS
+      - QRYN_DATABASE_DATA_0_SECURE=true
+      - QRYN_DATABASE_DATA_0_HTTPS=true
+      - QRYN_HTTP_SETTINGS_PORT=3200
+      - QRYN_SYSTEM_SETTINGS_DB_TIMER=0.5
+      - QRYN_SYSTEM_SETTINGS_DB_BULK=1000
+      - QRYN_LOG_SETTINGS_STDOUT=true

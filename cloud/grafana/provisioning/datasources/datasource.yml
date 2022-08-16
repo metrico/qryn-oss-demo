@@ -28,7 +28,7 @@ datasources:
     type: tempo
     access: proxy
     uid: tempo
-    url: http://qryn-go:3200
+    url: http://qryn-go:3200/tempo
     jsonData:
       nodeGraph:
         enabled: true
