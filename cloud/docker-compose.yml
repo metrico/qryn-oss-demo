@@ -46,23 +46,17 @@ services:
     container_name: qryn-writer
     restart: unless-stopped
     expose:
-      - 3101
       - 3100
     ports:
-      - 3101:3101
-      - 3100:3101
+      - 3100:3100
     environment:
-      - CLICKHOUSE_SERVER=clickhouse-server
-      - DEBUG=true
       - QRYN_DATABASE_DATA_0_NAME=qryn
       - QRYN_DATABASE_DATA_0_HOST=clickhouse-server
       - QRYN_DATABASE_DATA_0_PORT=9000
       - QRYN_DATABASE_DATA_0_DEBUG=true
       - QRYN_DATABASE_DATA_0_USER=default
       - QRYN_DATABASE_DATA_0_PASS=qryn
-      - QRYN_HTTP_SETTINGS_PORT=3101
-      - QRYN_SYSTEM_SETTINGS_DB_TIMER=0.5
-      - QRYN_SYSTEM_SETTINGS_DB_BULK=1234
+      - QRYN_HTTP_SETTINGS_PORT=3100
       - QRYN_LOG_SETTINGS_STDOUT=true
     command:
       - sh
@@ -80,8 +74,6 @@ services:
     ports:
       - 3200:3200
     environment:
-      - CLICKHOUSE_SERVER=clickhouse-server
-      - DEBUG=true
       - QRYN_DATABASE_DATA_0_NAME=qryn
       - QRYN_DATABASE_DATA_0_HOST=clickhouse-server
       - QRYN_DATABASE_DATA_0_PORT=9000
@@ -89,6 +81,7 @@ services:
       - QRYN_DATABASE_DATA_0_USER=default
       - QRYN_DATABASE_DATA_0_PASS=qryn
       - QRYN_HTTP_SETTINGS_PORT=3200
+      - QRYN_HTTP_SETTINGS_DEBUG=true
       - QRYN_SYSTEM_SETTINGS_DB_TIMER=0.5
       - QRYN_SYSTEM_SETTINGS_DB_BULK=1234
       - QRYN_LOG_SETTINGS_STDOUT=true
