@@ -44,8 +44,6 @@ services:
   qryn-writer:
     image: ghcr.io/metrico/qryn-writer:latest
     container_name: qryn-writer
-    volumes:
-      - ./writer/config.json:/usr/local/cloki-writer/etc/cloki-writer.json
     restart: unless-stopped
     expose:
       - 3101
@@ -76,8 +74,6 @@ services:
   qryn-go:
     image: ghcr.io/metrico/qryn-go:latest
     container_name: qryn-go
-    volumes:
-      - ./reader/config.json:/usr/local/clokigo/etc/cloki-go.json
     restart: unless-stopped
     expose:
       - 3200
