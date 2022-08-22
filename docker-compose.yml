@@ -64,7 +64,7 @@ services:
       - 8086
     ports:
       - "8086:8086"
-     depends_on:
+    depends_on:
       - qryn
 
   vector:
