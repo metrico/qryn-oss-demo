@@ -56,6 +56,17 @@ services:
        clickhouse-server:
          condition: service_healthy
 
+  fluxpipe:
+    image: ghcr.io/metrico/fluxpipe:latest
+    container_name: fluxpipe
+    restart: unless-stopped
+    expose:
+      - 8086
+    ports:
+      - "8086:8086"
+     depends_on:
+      - qryn
+
   vector:
     image: timberio/vector:latest-alpine
     container_name: vector
