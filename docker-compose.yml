@@ -6,7 +6,7 @@ volumes:
 
 services:
   grafana:
-    image: grafana/grafana-oss:9.0.6
+    image: grafana/grafana-oss:9.1.0
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
@@ -18,7 +18,7 @@ services:
       - GF_EXPLORE_ENABLED=true
       - GF_ALERTING_ENABLED=false
       - GF_UNIFIED_ALERTING_ENABLED=true
-      - GF_INSTALL_PLUGINS: https://github.com/knightss27/grafana-network-weathermap/releases/download/v0.3.1/knightss27-weathermap-panel-0.3.1.zip;network-weathermap
+      - GF_INSTALL_PLUGINS=https://github.com/knightss27/grafana-network-weathermap/releases/download/v0.3.1/knightss27-weathermap-panel-0.3.1.zip;network-weathermap
     restart: unless-stopped
     ports:
       - 3000:3000
@@ -65,11 +65,11 @@ services:
       - qryn
 
   exporter:
-    build:
-      context: dummy-exporter
-      dockerfile: Dockerfile
+    build: ./dummy-exporter
     ports:
       - "8080:8080"
+    depends_on:
+      - qryn
 
   dummy-server:
     build: ./dummy-server
@@ -77,4 +77,4 @@ services:
       - 4000:4000
       - 80:80
     depends_on:
-      - qryn-writer
+      - qryn
