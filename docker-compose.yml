@@ -19,6 +19,7 @@ services:
       - GF_ALERTING_ENABLED=false
       - GF_UNIFIED_ALERTING_ENABLED=true
       - GF_INSTALL_PLUGINS=https://github.com/knightss27/grafana-network-weathermap/releases/download/v0.3.1/knightss27-weathermap-panel-0.3.1.zip;network-weathermap
+      - GF_FEATURE_TOGGLES_ENABLE="traceToMetrics,publicDashboards"
     restart: unless-stopped
     ports:
       - 3000:3000
