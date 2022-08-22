@@ -18,6 +18,7 @@ services:
       - GF_EXPLORE_ENABLED=true
       - GF_ALERTING_ENABLED=false
       - GF_UNIFIED_ALERTING_ENABLED=true
+      - GF_INSTALL_PLUGINS: https://github.com/knightss27/grafana-network-weathermap/releases/download/v0.3.1/knightss27-weathermap-panel-0.3.1.zip;network-weathermap
     restart: unless-stopped
     ports:
       - 3000:3000
@@ -62,3 +63,11 @@ services:
       - ./vector/vector.toml:/etc/vector/vector.toml:ro
     depends_on:
       - qryn
+
+
+  exporter:
+    build:
+      context: exporter
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"

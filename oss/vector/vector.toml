@@ -27,3 +27,17 @@ compression = "none"
 
     [sinks.cloki_syslog.encoding]
     codec = "json"
+
+
+[sources.prom_scrape]
+type = "prometheus_scrape"
+endpoints = [ "http://exporter:8080/metrics" ]
+scrape_interval_secs = 15
+instance_tag = "instance"
+endpoint_tag = "endpoint"
+
+[sinks.prom_write]
+type = "prometheus_exporter"
+inputs = [ "prom_scrape" ]
+address = "qryn:3100"
+default_namespace = "service"
