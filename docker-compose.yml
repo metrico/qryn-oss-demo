@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./docker/opentelemetry_zipkin.sql:/docker-entrypoint-initdb.d/opentelemetry_zipkin.sql
+      - ./clickhouse/opentelemetry_zipkin.sql:/docker-entrypoint-initdb.d/opentelemetry_zipkin.sql
     ports:
       - 8123:8123
       - 9000:9000
@@ -66,7 +66,7 @@ services:
 
   exporter:
     build:
-      context: exporter
+      context: dummy-exporter
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
