@@ -64,7 +64,6 @@ services:
     depends_on:
       - qryn
 
-
   exporter:
     build:
       context: exporter
