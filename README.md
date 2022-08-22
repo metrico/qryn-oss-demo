@@ -1,19 +1,9 @@
 <img src="https://user-images.githubusercontent.com/1423657/173144443-fc7ba783-d5bf-47f9-bf59-707693da5ed1.png" width=200 />
 
 # qryn-oss-demo
-Docker Compose Demo for **qryn.js** _(AGPLv3)_
+**qryn.js** docker demo w/ sample _logs, traces and metrics_
 
-## Overview
-
-This docker-compose will spin up a full qryn setup w/ test data for validation
-
-The following elements will be started and automatically configured:
-
-- qryn
-- clickhouse
-- grafana
-- vector
-- generators 
+![184538094-13c11500-24ef-4468-9f33-dc9d564238e3](https://user-images.githubusercontent.com/1423657/186014786-165b18da-e808-4cf7-a6fc-eb90df705400.gif)
 
 ### Usage
 
