@@ -70,3 +70,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+
+  dummy-server:
+    build: ./dummy-server
+    ports:
+      - 4000:4000
+      - 80:80
+    depends_on:
+      - qryn-writer
