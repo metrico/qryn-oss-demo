@@ -28,7 +28,7 @@ module.exports = (serviceName) => {
 
   // Export to Zipkin/qryn
   const options = {
-    url: 'http://qryn:3100/api/v2/spans',
+    url: 'http://qryn:3100/tempo/api/push',
   }
   const exporter = new ZipkinExporter(options);
 

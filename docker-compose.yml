@@ -56,6 +56,8 @@ services:
     environment:
       - CLICKHOUSE_SERVER=clickhouse-server
       - CLICKHOUSE_AUTH=qryn:demo
+      - LOG_LEVEL=error
+      - NODE_OPTIONS="--max-old-space-size=4096"
     depends_on:
        clickhouse-server:
          condition: service_healthy
@@ -82,6 +84,7 @@ services:
 
   exporter:
     build: ./dummy-exporter
+    restart: unless-stopped
     ports:
       - "9090:8080"
     depends_on:
@@ -89,6 +92,7 @@ services:
 
   dummy-server:
     build: ./dummy-server
+    restart: unless-stopped
     ports:
       - 4000:4000
       - 80:80

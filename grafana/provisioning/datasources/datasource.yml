@@ -21,9 +21,9 @@ datasources:
     jsonData:
       derivedFields:
         - datasourceUid: tempo
-          matcherRegex: ".*/traces/(?\u003ctraceId\u003e.*)"
-          name: "traceId"
-          url: "${__value.raw}"
+          matcherRegex: "^.*?traceI[d|D]=(\\w+).*$"
+          name: traceId
+          url: '$${__value.raw}'
   - name: Tempo
     type: tempo
     access: proxy

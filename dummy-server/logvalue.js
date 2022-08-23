@@ -19,7 +19,7 @@ module.exports = (context) => {
       try {
           await request(
               {
-                  uri: 'http://qryn:3100/loki/api/v1/push/',
+                  uri: 'http://qryn:3100/loki/api/v1/push',
                   method: 'POST',
                   headers: {
                       'Content-type': 'application/json'
