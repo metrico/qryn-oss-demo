@@ -24,10 +24,6 @@ datasources:
           matcherRegex: ".*/traces/(?\u003ctraceId\u003e.*)"
           name: "traceId"
           url: "${__value.raw}"
-        - datasourceUid: tempo
-          matcherRegex: "^.*?traceI[d|D]=(\w+).*$"
-          name: TraceID
-          url: "${__value.raw}"
   - name: Tempo
     type: tempo
     access: proxy
@@ -52,7 +48,6 @@ datasources:
      graphiteVersion: "1.1"
      tlsAuth: false
      tlsAuthWithCACert: false
- 
   - name: Flux
     type: influxdb
     uid: flux
@@ -61,9 +56,9 @@ datasources:
     url: http://fluxpipe:8086/api/v2/
     basicAuth: false
     jsonData:
-      defaultBucket: ""
+      defaultBucket:
       httpMode: POST
       organization: qryn
       version: Flux
-#    secureJsonData:
-#      token: <my-token>
+    secureJsonData:
+      token:
