@@ -2,7 +2,7 @@
 [sources.dummy_logs]
 type = "demo_logs"
 format = "syslog"
-interval = 1.0
+interval = 5.0
 
 # Parse Syslog logs
 # See the Vector Remap Language reference for more info: https://vrl.dev
