@@ -5,7 +5,7 @@
 The ultimate **qryn.js** docker demo w/ sample _logs, traces and metrics_ - _batteries included!_
 
 <br />
-
+<a href="https://qryn.metrico.in" target="_blank">
 <img src="https://github.com/metrico/qryn-docs/blob/main/docs/resources/images/qryn_logo_trans.png?raw=true" width=50 />&nbsp;
 <img src="https://user-images.githubusercontent.com/1423657/184496222-ca95d80c-906f-4c77-a963-86f0b27a56b0.png" width=50 />&nbsp;
 <img src="https://user-images.githubusercontent.com/1423657/184496304-4f35a365-efdc-4dca-9771-6b7b1deb9ae3.png" width=50 />&nbsp;
@@ -14,8 +14,9 @@ The ultimate **qryn.js** docker demo w/ sample _logs, traces and metrics_ - _bat
 <img src="https://user-images.githubusercontent.com/1423657/184494381-15d20f5d-3d52-411b-9064-dfd2ccea7c1c.png" width=50 />&nbsp;
 <img src="https://user-images.githubusercontent.com/1423657/184494438-17d7ceb0-a62a-4819-9b1c-43d7f0baf802.png" width=50 />&nbsp;
 <img src="https://avatars.githubusercontent.com/u/54801242?s=200&v=4" width=50 /><br/>
+</a>
 
-![184538094-13c11500-24ef-4468-9f33-dc9d564238e3](https://user-images.githubusercontent.com/1423657/186014786-165b18da-e808-4cf7-a6fc-eb90df705400.gif)
+[![184538094-13c11500-24ef-4468-9f33-dc9d564238e3](https://user-images.githubusercontent.com/1423657/186014786-165b18da-e808-4cf7-a6fc-eb90df705400.gif)](https://qryn.metrico.in)
 
 <br>
 
