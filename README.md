@@ -17,19 +17,33 @@ The ultimate **qryn.js** docker demo w/ sample _logs, traces and metrics_ - for 
 
 ![184538094-13c11500-24ef-4468-9f33-dc9d564238e3](https://user-images.githubusercontent.com/1423657/186014786-165b18da-e808-4cf7-a6fc-eb90df705400.gif)
 
+<br>
+
 ### Usage
 
-From the current directory execute the following steps to get started:
+#### Setup
+Clone the repository and launch the **qryn** polyglot demo using _docker-compose_
 
-1) Start the containers
 ```
 docker-compose up -d
 ```
-2) Login to Grafana as `admin/admin`
+#### Login 
+Access the preconfigured Grafana instance as `admin/admin`
 ```
 http://localhost:3000
 ```
-3) Explore Loki logs and Tempo traces using the auto-configured datasources:
+#### Explore
+The demo generates correlated _logs, metrics and traces_ with autoconfigured datasources
+
+  - ```Loki```
+  - ```Tempo```
+  - ```Prometheus```
+  - ```Flux```
+
+#### Become a master
+Start learning using our [online documentation](https://qryn.metrico.in) 
+
+<br>
 
 ![image](https://user-images.githubusercontent.com/1423657/183254312-b52811e5-f563-440e-84e4-8312714a4c9b.png)
 
