@@ -45,9 +45,10 @@ datasources:
     url: http://qryn:3100
     basicAuth: false
     jsonData:
-     graphiteVersion: "1.1"
-     tlsAuth: false
-     tlsAuthWithCACert: false
+      httpMethod: GET
+      graphiteVersion: "1.1"
+      tlsAuth: false
+      tlsAuthWithCACert: false
   - name: Flux
     type: influxdb
     uid: flux

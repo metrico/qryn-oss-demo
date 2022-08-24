@@ -31,7 +31,7 @@ compression = "none"
 
 [sources.prom_scrape]
 type = "prometheus_scrape"
-endpoints = [ "http://exporter:9090/metrics" ]
+endpoints = [ "http://exporter:8080/metrics" ]
 scrape_interval_secs = 10
 instance_tag = "instance"
 endpoint_tag = "endpoint"
@@ -40,4 +40,4 @@ endpoint_tag = "endpoint"
 type = "prometheus_remote_write"
 inputs = [ "prom_scrape" ]
 endpoint = "http://qryn:3100/prom/remote/write"
-# default_namespace = "service"
+default_namespace = "service"
