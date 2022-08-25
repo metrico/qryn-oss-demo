@@ -54,7 +54,7 @@ datasources:
     uid: flux
     version: 2
     access: proxy
-    url: http://fluxpipe:8086/api/v2/
+    url: http://fluxpipe:8086
     basicAuth: false
     jsonData:
       defaultBucket:
