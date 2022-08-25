@@ -25,7 +25,7 @@ datasources:
           name: traceId
           url: '$${__value.raw}'
         - datasourceUid: tempo
-          matcherRegex: "^.*?\"traceI[d|D]\":\"(\w+)\".*$"
+          matcherRegex: "^.*?\"traceID\":\"(\\w+)\".*$"
           name: traceID
           url: '$${__value.raw}'
   - name: Tempo
