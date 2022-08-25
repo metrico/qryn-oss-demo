@@ -41,7 +41,7 @@ The demo generates correlated _logs, metrics and traces_ with autoconfigured dat
   - ```Prometheus```
   - ```Flux```
 
-#### Become a master
+#### Go Pro
 Loving it? Learn how to send your own data using our [online documentation](https://qryn.metrico.in) 
 
 <br>
