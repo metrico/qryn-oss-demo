@@ -24,6 +24,10 @@ datasources:
           matcherRegex: "^.*?traceI[d|D]=(\\w+).*$"
           name: traceId
           url: '$${__value.raw}'
+        - datasourceUid: tempo
+          matcherRegex: "^.*?"traceI[d|D]":"(\w+)".*$"
+          name: traceID
+          url: '$${__value.raw}'
   - name: Tempo
     type: tempo
     access: proxy
