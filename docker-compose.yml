@@ -59,6 +59,7 @@ services:
       - CLICKHOUSE_AUTH=qryn:demo
 #      - LOG_LEVEL=debug
       - NODE_OPTIONS="--max-old-space-size=4096"
+      - ALERTMAN_URL=http://alertman:9093
     depends_on:
        clickhouse-server:
          condition: service_healthy
@@ -101,3 +102,23 @@ services:
       - 80:80
     depends_on:
       - qryn
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    hostname: mailhog
+    expose:
+      - 1025
+      - 8025
+    ports:
+      - "8025:8025"
+  alertman:
+    image: prom/alertmanager:latest
+    container_name: alertman
+    hostname: alertman
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    expose:
+      - 9093
+    ports:
+      - 9093:9093
