@@ -25,7 +25,8 @@ The ultimate **qryn.js** docker demo w/ sample _logs, traces and metrics_ - _bat
 #### Setup
 Clone the repository and launch the **qryn** polyglot demo using _docker-compose_
 
-```
+```bash
+docker-compose pull 
 docker-compose up -d
 ```
 #### Login 
