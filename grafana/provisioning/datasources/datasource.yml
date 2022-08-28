@@ -33,6 +33,7 @@ datasources:
     access: proxy
     uid: tempo
     url: http://qryn:3100
+    editable: true
     jsonData:
       nodeGraph:
         enabled: true
@@ -42,11 +43,19 @@ datasources:
         spanEndTimeShift: "2000ms"
         spanStartTimeShift: "-2000ms"
         tags: ['job']
+      tracesToMetrics:
+        datasourceUid: prometheus
+        tags: ['job']
+      serviceMap:
+        datasourceUid: prometheus
+      lokiSearch:
+        datasourceUid: loki
   - name: Prometheus
     type: prometheus
     access: proxy
     uid: prometheus
     url: http://qryn:3100
+    editable: true
     basicAuth: false
     jsonData:
       httpMethod: GET
