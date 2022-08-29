@@ -40,4 +40,3 @@ endpoint_tag = "endpoint"
 type = "prometheus_remote_write"
 inputs = [ "prom_scrape" ]
 endpoint = "http://qryn:3100/prom/remote/write"
-default_namespace = "service"
