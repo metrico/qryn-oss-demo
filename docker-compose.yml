@@ -19,8 +19,7 @@ services:
       - GF_EXPLORE_ENABLED=true
       - GF_ALERTING_ENABLED=false
       - GF_UNIFIED_ALERTING_ENABLED=true
-      - GF_INSTALL_PLUGINS=https://github.com/knightss27/grafana-network-weathermap/releases/download/v0.3.1/knightss27-weathermap-panel-0.3.1.zip;network-weathermap
-      - GF_FEATURE_TOGGLES_ENABLE=traceToMetrics,publicDashboards
+      - GF_FEATURE_TOGGLES_ENABLE=traceToMetrics,publicDashboards,tempoApmTable
     restart: unless-stopped
     ports:
       - 3000:3000
@@ -28,7 +27,7 @@ services:
       - clickhouse-server
 
   clickhouse-server:
-    image: clickhouse/clickhouse-server:latest
+    image: clickhouse/clickhouse-server:22.9
     container_name: clickhouse-server
     restart: unless-stopped
     volumes:
@@ -112,6 +111,7 @@ services:
       - 8025
     ports:
       - "8025:8025"
+      
   alertman:
     image: prom/alertmanager:latest
     container_name: alertman
