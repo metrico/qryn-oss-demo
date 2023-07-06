@@ -63,17 +63,6 @@ services:
        clickhouse-server:
          condition: service_healthy
 
-  fluxpipe:
-    image: ghcr.io/metrico/fluxpipe:latest
-    container_name: fluxpipe
-    restart: unless-stopped
-    expose:
-      - 8086
-    ports:
-      - "8086:8086"
-    depends_on:
-      - qryn
-
   vector:
     image: timberio/vector:latest-alpine
     container_name: vector
@@ -122,3 +111,25 @@ services:
       - 9093
     ports:
       - 9093:9093
+
+  otel-collector:
+    container_name: otel-collector
+    image: ghcr.io/metrico/qryn-otel-collector:latest
+    volumes:
+      - ./otel/otel-collector-config.yaml:/etc/otel/config.yaml
+    ports:
+      - "3200:3100"     # Loki/Logql HTTP receiver
+      - "3201:3200"     # Loki/Logql gRPC receiver
+      - "8088:8088"     # Splunk HEC receiver
+      - "5514:5514"     # Syslog TCP Rereceiverceiver
+      - "24224:24224"   # Fluent Forward receiver
+      - "4317:4317"     # OTLP gRPC receiver
+      - "4318:4318"     # OTLP HTTP receiver
+      - "14250:14250"   # Jaeger gRPC receiver
+      - "14268:14268"   # Jaeger thrift HTTP receiver
+      - "9411:9411"     # Zipkin Trace receiver
+      - "11800:11800"   # Skywalking gRPC receiver
+      - "12800:12800"   # Skywalking HTTP receiver
+      - "8086:8086"     # InfluxDB Line proto HTTP
+
+    restart: on-failure
