@@ -43,7 +43,7 @@ receivers:
             - targets: ['exporter:8080']
   influxdb:
     endpoint: 0.0.0.0:8086
-    
+
 processors:
   batch:
     send_batch_size: 10000
@@ -61,25 +61,6 @@ processors:
       - key: service.name
         value: "serviceName"
         action: upsert
-  spanmetrics:
-    metrics_exporter: otlp/spanmetrics
-    latency_histogram_buckets: [100us, 1ms, 2ms, 6ms, 10ms, 100ms, 250ms]
-    dimensions_cache_size: 1500
-  servicegraph:
-    metrics_exporter: otlp/spanmetrics
-    latency_histogram_buckets: [100us, 1ms, 2ms, 6ms, 10ms, 100ms, 250ms]
-    dimensions: [cluster, namespace]
-    store:
-      ttl: 2s
-      max_items: 200
-  metricstransform:
-    transforms:
-      - include: calls_total
-        action: update
-        new_name: traces_spanmetrics_calls_total
-      - include: latency
-        action: update
-        new_name: traces_spanmetrics_latency
 exporters:
   qryn:
     dsn: tcp://clickhouse-server:9000/cloki?username=qryn&password=demo
@@ -92,8 +73,8 @@ exporters:
       max_interval: 30s
       max_elapsed_time: 300s
     logs:
-       format: raw
-  otlp/spanmetrics:
+      format: raw
+  otlp:
     endpoint: localhost:4317
     tls:
       insecure: true
@@ -105,6 +86,9 @@ extensions:
     size_mib: 1000
 
 service:
+  telemetry:
+    logs:
+      level: "info"
   extensions: [pprof, zpages, health_check]
   pipelines:
     logs:
@@ -113,11 +97,7 @@ service:
       exporters: [qryn]
     traces:
       receivers: [otlp, jaeger, zipkin, skywalking]
-      processors: [memory_limiter, resourcedetection/system, resource, spanmetrics, servicegraph, batch]
-      exporters: [qryn]
-    metrics/spanmetrics:
-      receivers: [otlp]
-      processors: [metricstransform]
+      processors: [memory_limiter, resourcedetection/system, resource, batch]
       exporters: [qryn]
     metrics:
       receivers: [prometheus, influxdb]
