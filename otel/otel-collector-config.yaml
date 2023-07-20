@@ -61,6 +61,7 @@ processors:
       - key: service.name
         value: "serviceName"
         action: upsert
+
 exporters:
   qryn:
     dsn: tcp://clickhouse-server:9000/cloki?username=qryn&password=demo
