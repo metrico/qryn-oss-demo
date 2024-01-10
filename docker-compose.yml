@@ -6,7 +6,7 @@ volumes:
 
 services:
   grafana:
-    image: grafana/grafana-oss:10.0.1
+    image: grafana/grafana-oss:10.2.2
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
@@ -24,7 +24,25 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - clickhouse-server
+      - qryn
+
+  chproxy:
+    image: contentsquareplatform/chproxy:v1.25.0
+    container_name: chproxy
+    volumes:
+      - ./chproxy/config:/config
+      - ./chproxy/cache:/data/cache
+    ports:
+      - 9001:9001
+    command: -config /config/config.yaml
+    depends_on:
+      clickhouse-server:
+        condition: service_healthy
+    healthcheck:
+      test: curl 'http://127.0.0.1:9001/metrics'
+      interval: 2s
+      timeout: 20s
+      retries: 10
 
   clickhouse-server:
     image: clickhouse/clickhouse-server:22.9
@@ -54,14 +72,17 @@ services:
     ports:
       - "3100:3100"
     environment:
-      - CLICKHOUSE_SERVER=clickhouse-server
+      - CLICKHOUSE_SERVER=chproxy
+      - CLICKHOUSE_PORT=9001
       - CLICKHOUSE_AUTH=qryn:demo
 #      - LOG_LEVEL=debug
       - NODE_OPTIONS="--max-old-space-size=4096"
       - ALERTMAN_URL=http://alertman:9093
     depends_on:
-       clickhouse-server:
-         condition: service_healthy
+      chproxy:
+        condition: service_healthy
+      clickhouse-server:
+        condition: service_healthy
 
   vector:
     image: timberio/vector:latest-alpine

@@ -62,6 +62,9 @@ datasources:
       graphiteVersion: "1.1"
       tlsAuth: false
       tlsAuthWithCACert: false
+      cacheLevel: 'High'
+      incrementalQuerying: 'Enable'
+      incrementalQueryOverlapWindow: 2m
   - name: Flux
     type: influxdb
     uid: flux
