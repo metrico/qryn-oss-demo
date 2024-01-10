@@ -1,0 +1,34 @@
+log_debug: false
+hack_me_please: true
+
+server:
+  http:
+    listen_addr: "0.0.0.0:9001"
+
+users:
+  - name: "qryn"
+    password: "demo"
+    to_cluster: "clickhouse-server"
+    to_user: "qryn"
+    max_concurrent_queries: 1000
+    max_execution_time: 30s
+    cache: "default_cache"
+
+clusters:
+  - name: "clickhouse-server"
+    nodes: [
+      "clickhouse-server:8123"
+    ]
+    users:
+      - name: "qryn"
+        password: "demo"
+
+caches:
+  - name: "default_cache"
+    mode: "file_system"
+    file_system:
+      dir: "/data/cache"
+      max_size: 2Gb
+    max_payload_size: 2Gb
+    shared_with_all_users: true
+    expire: 1h
