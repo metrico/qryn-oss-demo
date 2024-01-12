@@ -78,6 +78,7 @@ services:
 #      - LOG_LEVEL=debug
       - NODE_OPTIONS="--max-old-space-size=4096"
       - ALERTMAN_URL=http://alertman:9093
+      - FASTIFY_METRICS="true"
     depends_on:
       chproxy:
         condition: service_healthy
