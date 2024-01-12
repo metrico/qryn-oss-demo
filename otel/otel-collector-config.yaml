@@ -41,6 +41,10 @@ receivers:
           scrape_interval: 5s
           static_configs:
             - targets: ['exporter:8080']
+        - job_name: 'qryn'
+          scrape_interval: 5s
+          static_configs:
+            - targets: ['qryn:3100']
   influxdb:
     endpoint: 0.0.0.0:8086
 
