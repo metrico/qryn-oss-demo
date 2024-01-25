@@ -98,7 +98,7 @@ service:
   extensions: [pprof, zpages, health_check]
   pipelines:
     logs:
-      receivers: [fluentforward, otlp, loki, pyroscopereceiver]
+      receivers: [fluentforward, otlp, loki]
       processors: [memory_limiter, resourcedetection/system, resource, batch]
       exporters: [qryn]
     traces:
@@ -108,4 +108,7 @@ service:
     metrics:
       receivers: [prometheus, influxdb]
       processors: [memory_limiter, resourcedetection/system, resource, batch]
+      exporters: [qryn]
+    logs/profiles:
+      receivers: [pyroscopereceiver]
       exporters: [qryn]
