@@ -16,6 +16,8 @@ The ultimate **qryn.js** docker demo w/ sample _logs, traces and metrics_ - _bat
 <img src="https://avatars.githubusercontent.com/u/54801242?s=200&v=4" width=50 /><br/>
 </a>
 
+<br>
+
 [![184538094-13c11500-24ef-4468-9f33-dc9d564238e3](https://user-images.githubusercontent.com/1423657/186014786-165b18da-e808-4cf7-a6fc-eb90df705400.gif)](https://qryn.metrico.in)
 
 <br>
@@ -54,3 +56,6 @@ Loving it? Learn how to send your own data using our [online documentation](http
 ![image](https://user-images.githubusercontent.com/1423657/186708038-685467ee-a135-4fa0-af31-eae487da2139.png)
 
 ![image](https://user-images.githubusercontent.com/1423657/186280231-8fbcf1f1-69b7-43fe-91ad-7e6ee8389978.png)
+
+![image](https://github.com/metrico/qryn-oss-demo/assets/1423657/5e59a0f5-5d54-4fdb-a44c-8086035fbceb)
+
