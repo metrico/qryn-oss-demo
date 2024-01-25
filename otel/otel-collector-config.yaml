@@ -47,6 +47,7 @@ receivers:
             - targets: ['qryn:3100']
   influxdb:
     endpoint: 0.0.0.0:8086
+  pyroscopereceiver:
 
 processors:
   batch:
@@ -97,7 +98,7 @@ service:
   extensions: [pprof, zpages, health_check]
   pipelines:
     logs:
-      receivers: [fluentforward, otlp, loki]
+      receivers: [fluentforward, otlp, loki, pyroscopereceiver]
       processors: [memory_limiter, resourcedetection/system, resource, batch]
       exporters: [qryn]
     traces:
