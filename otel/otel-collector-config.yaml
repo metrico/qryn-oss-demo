@@ -114,4 +114,4 @@ service:
       exporters: [qryn]
     logs/profiles:
       receivers: [pyroscopereceiver]
-      exporters: [qryn]
+      exporters: [qryneprofileexporter]
