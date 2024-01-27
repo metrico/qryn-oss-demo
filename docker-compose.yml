@@ -113,6 +113,23 @@ services:
     depends_on:
       - qryn
 
+  profiling:
+    build: ./pyroscope
+    environment:
+      - PYROSCOPE_APPLICATION_NAME=optaplanner
+      - PYROSCOPE_PROFILING_INTERVAL=10ms
+      - PYROSCOPE_PROFILER_EVENT=itimer
+      - PYROSCOPE_PROFILER_ALLOC=4k
+      - PYROSCOPE_UPLOAD_INTERVAL=8s
+      - PYROSCOPE_SAMPLING_DURATION=2s
+      - PYROSCOPE_FORMAT=jfr
+      - PYROSCOPE_SAMPLING_EVENT_ORDER=itimer,alloc
+      - PYROSCOPE_LOG_LEVEL=debug
+      - PYROSCOPE_SERVER_ADDRESS=http://qryn:3100
+      - PYROSCOPE_AUTH_TOKEN=abc123
+    ports:
+      - "4040:8080"
+
   mailhog:
     image: mailhog/mailhog:latest
     container_name: mailhog
@@ -153,5 +170,6 @@ services:
       - "11800:11800"   # Skywalking gRPC receiver
       - "12800:12800"   # Skywalking HTTP receiver
       - "8086:8086"     # InfluxDB Line proto HTTP
+      - "8062:8062"     # Pyroscope jprof
 
     restart: on-failure
