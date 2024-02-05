@@ -45,7 +45,7 @@ services:
       retries: 10
 
   clickhouse-server:
-    image: clickhouse/clickhouse-server:22.9
+    image: clickhouse/clickhouse-server:23.3
     container_name: clickhouse-server
     restart: unless-stopped
     volumes:
