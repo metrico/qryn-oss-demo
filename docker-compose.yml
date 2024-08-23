@@ -6,7 +6,7 @@ volumes:
 
 services:
   grafana:
-    image: grafana/grafana-oss:10.2.2
+    image: grafana/grafana-oss:11.1.4
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
@@ -20,6 +20,7 @@ services:
       - GF_ALERTING_ENABLED=false
       - GF_UNIFIED_ALERTING_ENABLED=true
       - GF_FEATURE_TOGGLES_ENABLE=traceToMetrics,publicDashboards,tempoApmTable
+      - GF_INSTALL_PLUGINS=grafana-pyroscope-app,https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app
     restart: unless-stopped
     ports:
       - 3000:3000
