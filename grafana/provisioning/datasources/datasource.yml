@@ -81,13 +81,34 @@ datasources:
       version: Flux
     secureJsonData:
       token:
-  - name: Pyroscope
-    type: pyroscope-datasource
+  - id: 1
+    name: grafana-pyroscope-datasource
+    type: grafana-pyroscope-datasource
+    typeLogoUrl: public/app/plugins/datasource/grafana-pyroscope-datasource/img/grafana_pyroscope_icon.svg
     access: proxy
-    orgId: 1
-    uid: pyroscope
-    editable: true
-    jsonData:
-      path: http://qryn:3100
+    url: http://qryn:3100
+    user: ""
+    database: ""
+    basicAuth: false
+    basicAuthUser: ""
+    withCredentials: false
+    isDefault: true
+    jsonData: { }
+    secureJsonFields: { }
+    version: 2
+    readOnly: false
+    accessControl:
+      alert.instances.external:read: true
+      alert.instances.external:write: true
+      alert.notifications.external:read: true
+      alert.notifications.external:write: true
+      alert.rules.external:read: true
+      alert.rules.external:write: true
+      datasources.id:read: true
+      datasources:delete: true
+      datasources:query: true
+      datasources:read: true
+      datasources:write: true
+    apiVersion: ""
     # secureJsonData:
     #   apiKey: {YOUR_API_KEY}

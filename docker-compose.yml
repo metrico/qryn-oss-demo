@@ -4,10 +4,16 @@ volumes:
     grafana_data: {}
     clickhouse_data: {}
 
+networks:
+  qryn-oss:
+    driver: bridge
+
 services:
   grafana:
     image: grafana/grafana-oss:11.1.4
     container_name: grafana
+    networks:
+      - qryn-oss
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
@@ -30,6 +36,8 @@ services:
   chproxy:
     image: contentsquareplatform/chproxy:v1.25.0
     container_name: chproxy
+    networks:
+      - qryn-oss
     volumes:
       - ./chproxy/config:/config
       - ./chproxy/cache:/data/cache
@@ -46,9 +54,12 @@ services:
       retries: 10
 
   clickhouse-server:
-    image: clickhouse/clickhouse-server:22.9
+    image: clickhouse/clickhouse-server:24.1
     container_name: clickhouse-server
+    hostname: clickhouse
     restart: unless-stopped
+    networks:
+      - qryn-oss
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - ./clickhouse/opentelemetry_zipkin.sql:/docker-entrypoint-initdb.d/opentelemetry_zipkin.sql
@@ -67,19 +78,23 @@ services:
   qryn:
     image: qxip/qryn:latest
     container_name: qryn
+    hostname: qryn
     restart: unless-stopped
+    networks:
+      - qryn-oss
     expose:
       - 3100
     ports:
       - "3100:3100"
     environment:
-      - CLICKHOUSE_SERVER=chproxy
-      - CLICKHOUSE_PORT=9001
+      - CLICKHOUSE_SERVER=clickhouse-server
+      - CLICKHOUSE_PORT=8123
       - CLICKHOUSE_AUTH=qryn:demo
+      - CLICKHOUSE_DB=qryn
 #      - LOG_LEVEL=debug
       - NODE_OPTIONS="--max-old-space-size=4096"
       - ALERTMAN_URL=http://alertman:9093
-      - FASTIFY_METRICS="true"
+      - FASTIFY_METRICS=true
     depends_on:
       chproxy:
         condition: service_healthy
@@ -90,6 +105,8 @@ services:
     image: timberio/vector:latest-alpine
     container_name: vector
     restart: unless-stopped
+    networks:
+      - qryn-oss
     volumes:
       - ./vector/vector.toml:/etc/vector/vector.toml:ro
     depends_on:
@@ -99,6 +116,8 @@ services:
     build: ./dummy-exporter
     container_name: exporter
     restart: unless-stopped
+    networks:
+      - qryn-oss
     ports:
       - "9090:8080"
     depends_on:
@@ -108,33 +127,20 @@ services:
     build: ./dummy-server
     container_name: dummy-server
     restart: unless-stopped
+    networks:
+      - qryn-oss
     ports:
       - 4000:4000
       - 80:80
     depends_on:
       - qryn
 
-  profiling:
-    build: ./pyroscope
-    environment:
-      - PYROSCOPE_APPLICATION_NAME=optaplanner
-      - PYROSCOPE_PROFILING_INTERVAL=10ms
-      - PYROSCOPE_PROFILER_EVENT=itimer
-      - PYROSCOPE_PROFILER_ALLOC=4k
-      - PYROSCOPE_UPLOAD_INTERVAL=8s
-      - PYROSCOPE_SAMPLING_DURATION=2s
-      - PYROSCOPE_FORMAT=jfr
-      - PYROSCOPE_SAMPLING_EVENT_ORDER=itimer,alloc
-      - PYROSCOPE_LOG_LEVEL=debug
-      - PYROSCOPE_SERVER_ADDRESS=http://qryn:3100
-      - PYROSCOPE_AUTH_TOKEN=abc123
-    ports:
-      - "4040:8080"
-
   mailhog:
     image: mailhog/mailhog:latest
     container_name: mailhog
     hostname: mailhog
+    networks:
+      - qryn-oss
     expose:
       - 1025
       - 8025
@@ -145,6 +151,8 @@ services:
     image: prom/alertmanager:latest
     container_name: alertman
     hostname: alertman
+    networks:
+      - qryn-oss
     volumes:
       - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
     expose:
@@ -154,7 +162,9 @@ services:
 
   otel-collector:
     container_name: otel-collector
-    image: ghcr.io/metrico/qryn-otel-collector:latest
+    image: ghcr.io/metrico/qryn-otel-collector:0.0.5
+    networks:
+      - qryn-oss
     volumes:
       - ./otel/otel-collector-config.yaml:/etc/otel/config.yaml
     ports:

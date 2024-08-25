@@ -84,21 +84,20 @@ exporters:
     endpoint: localhost:4317
     tls:
       insecure: true
-  qryneprofileexporter:
-    dsn: clickhouse://localhost:9000/qryn?username=qryn&password=demo
+  clickhouseprofileexporter:
+    dsn: clickhouse://clickhouse-server:9000/qryn?username=qryn&password=demo
       
 extensions:
   health_check:
   pprof:
   zpages:
-  memory_ballast:
-    size_mib: 1000
+  pyroscope:
 
 service:
   telemetry:
     logs:
       level: "info"
-  extensions: [pprof, zpages, health_check]
+  extensions: [pprof, zpages, health_check, pyroscope]
   pipelines:
     logs:
       receivers: [fluentforward, otlp, loki]
@@ -114,4 +113,4 @@ service:
       exporters: [qryn]
     logs/profiles:
       receivers: [pyroscopereceiver]
-      exporters: [qryneprofileexporter]
+      exporters: [clickhouseprofileexporter]
