@@ -79,6 +79,7 @@ services:
     image: qxip/qryn:latest
     container_name: qryn
     hostname: qryn
+    pull_policy: always
     restart: unless-stopped
     networks:
       - qryn-oss
@@ -182,5 +183,29 @@ services:
       - "12800:12800"   # Skywalking HTTP receiver
       - "8086:8086"     # InfluxDB Line proto HTTP
       - "8062:8062"     # Pyroscope jprof
-
     restart: on-failure
+    
+  alloy:
+    privileged: true
+    image: grafana/alloy:latest
+    container_name: alloy
+    pull_policy: always
+    restart: on-failure
+    volumes:
+      - ./alloy/config.alloy:/etc/alloy/config.alloy
+    environment:
+      REMOTE_WRITE_HOST: qryn:3100
+      LOKI_HOST: qryn:3100
+      TEMPO_HOST: qryn:3100
+      PYROSCOPE_HOST: otel-collector:8062
+    depends_on:
+      - qryn
+      - otel-collector
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --storage.path=/var/lib/alloy/data
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --stability.level=experimental # Enable all functionality
+    ports:
+      - "12345:12345"
