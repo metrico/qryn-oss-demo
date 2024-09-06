@@ -42,7 +42,7 @@ tracing {
         sampling_fraction = 0.1
 
         // Forward internal spans to the local Tempo instance.
-        write_to = [otelcol.exporter.otlp.tempo.input]
+        write_to = [otelcol.processor.attributes.tempolabel.input]
 }
 
 // Collect metrics from the local running Alloy instance and forward to
@@ -65,7 +65,7 @@ pyroscope.scrape "default" {
 prometheus.remote_write "prometheus" {
         endpoint {
                 url = format(
-                        "http://%s/api/v1/push",
+                        "http://%s/api/v1/write",
                         coalesce(env("REMOTE_WRITE_HOST"), "localhost:3100"),
                 )
         }
@@ -80,9 +80,20 @@ loki.write "loki" {
         }
 }
 
-otelcol.exporter.otlp "tempo" {
+otelcol.processor.attributes "tempolabel" {
+        output {
+                traces = [otelcol.exporter.otlphttp.tempo.input]
+        }
+        action {
+                key = "job"
+                action = "upsert"
+                value = "integrations/self"
+        }
+}
+
+otelcol.exporter.otlphttp "tempo" {
         client {
-                endpoint = coalesce(env("TEMPO_HOST"), "localhost:3100")
+                endpoint = coalesce(env("TEMPO_HOST"), "http://localhost:3100")
                 tls {
                         insecure = true
                 }

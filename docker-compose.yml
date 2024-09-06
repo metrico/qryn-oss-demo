@@ -163,6 +163,7 @@ services:
 
   otel-collector:
     container_name: otel-collector
+    hostname: otel-collector
     image: ghcr.io/metrico/qryn-otel-collector:0.0.5
     networks:
       - qryn-oss
@@ -191,12 +192,14 @@ services:
     container_name: alloy
     pull_policy: always
     restart: on-failure
+    networks:
+      - qryn-oss
     volumes:
       - ./alloy/config.alloy:/etc/alloy/config.alloy
     environment:
       REMOTE_WRITE_HOST: qryn:3100
       LOKI_HOST: qryn:3100
-      TEMPO_HOST: qryn:3100
+      TEMPO_HOST: http://qryn:3100
       PYROSCOPE_HOST: otel-collector:8062
     depends_on:
       - qryn
