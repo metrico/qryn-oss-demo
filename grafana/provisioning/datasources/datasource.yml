@@ -8,7 +8,7 @@ deleteDatasources:
     orgId: 1
   - name: Prometheus
     orgId: 1
-  - name: Flux
+  - name: Pyroscope
     orgId: 1
 
 datasources:
@@ -65,17 +65,16 @@ datasources:
       cacheLevel: 'High'
       incrementalQuerying: 'Enable'
       incrementalQueryOverlapWindow: 2m
-  - name: Flux
-    type: influxdb
-    uid: flux
+  - name: Pyroscope
+    uid: pyroscope
+    type: grafana-pyroscope-datasource
     version: 2
     access: proxy
-    url: http://fluxpipe:8086
+    url: http://qryn:3100
     basicAuth: false
-    jsonData:
-      defaultBucket:
-      httpMode: POST
-      organization: qryn
-      version: Flux
-    secureJsonData:
-      token:
+    basicAuthUser: ""
+    withCredentials: false
+    isDefault: false
+    readOnly: false
+    # secureJsonData:
+    #   apiKey: {YOUR_API_KEY}

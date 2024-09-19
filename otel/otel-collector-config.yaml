@@ -47,6 +47,7 @@ receivers:
             - targets: ['qryn:3100']
   influxdb:
     endpoint: 0.0.0.0:8086
+  pyroscopereceiver:
 
 processors:
   batch:
@@ -68,7 +69,7 @@ processors:
 
 exporters:
   qryn:
-    dsn: tcp://clickhouse-server:9000/cloki?username=qryn&password=demo
+    dsn: tcp://clickhouse-server:9000/qryn?username=qryn&password=demo
     timeout: 10s
     sending_queue:
       queue_size: 100
@@ -83,18 +84,20 @@ exporters:
     endpoint: localhost:4317
     tls:
       insecure: true
+  clickhouseprofileexporter:
+    dsn: clickhouse://clickhouse-server:9000/qryn?username=qryn&password=demo
+      
 extensions:
   health_check:
   pprof:
   zpages:
-  memory_ballast:
-    size_mib: 1000
+  pyroscope:
 
 service:
   telemetry:
     logs:
       level: "info"
-  extensions: [pprof, zpages, health_check]
+  extensions: [pprof, zpages, health_check, pyroscope]
   pipelines:
     logs:
       receivers: [fluentforward, otlp, loki]
@@ -108,3 +111,6 @@ service:
       receivers: [prometheus, influxdb]
       processors: [memory_limiter, resourcedetection/system, resource, batch]
       exporters: [qryn]
+    logs/profiles:
+      receivers: [pyroscopereceiver]
+      exporters: [clickhouseprofileexporter]

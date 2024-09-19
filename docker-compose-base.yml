@@ -60,7 +60,6 @@ services:
       - qryn-oss
     volumes:
       - clickhouse_data:/var/lib/clickhouse
-      - ./clickhouse/opentelemetry_zipkin.sql:/docker-entrypoint-initdb.d/opentelemetry_zipkin.sql
     environment:
       - CLICKHOUSE_USER=qryn
       - CLICKHOUSE_PASSWORD=demo
@@ -98,40 +97,6 @@ services:
         condition: service_healthy
       clickhouse-server:
         condition: service_healthy
-
-  vector:
-    image: timberio/vector:latest-alpine
-    container_name: vector
-    restart: unless-stopped
-    networks:
-      - qryn-oss
-    volumes:
-      - ./vector/vector.toml:/etc/vector/vector.toml:ro
-    depends_on:
-      - qryn
-
-  exporter:
-    build: ./dummy-exporter
-    container_name: exporter
-    restart: unless-stopped
-    networks:
-      - qryn-oss
-    ports:
-      - "9090:8080"
-    depends_on:
-      - qryn
-
-  dummy-server:
-    build: ./dummy-server
-    container_name: dummy-server
-    restart: unless-stopped
-    networks:
-      - qryn-oss
-    ports:
-      - 4000:4000
-      - 80:80
-    depends_on:
-      - qryn
 
   mailhog:
     image: mailhog/mailhog:latest
@@ -182,30 +147,3 @@ services:
       - "8086:8086"     # InfluxDB Line proto HTTP
       - "8062:8062"     # Pyroscope jprof
     restart: on-failure
-    
-  alloy:
-    privileged: true
-    image: grafana/alloy:latest
-    container_name: alloy
-    pull_policy: always
-    restart: on-failure
-    networks:
-      - qryn-oss
-    volumes:
-      - ./alloy/config.alloy:/etc/alloy/config.alloy
-    environment:
-      REMOTE_WRITE_HOST: qryn:3100
-      LOKI_HOST: qryn:3100
-      TEMPO_HOST: http://qryn:3100
-      PYROSCOPE_HOST: otel-collector:8062
-    depends_on:
-      - qryn
-      - otel-collector
-    command:
-      - run
-      - /etc/alloy/config.alloy
-      - --storage.path=/var/lib/alloy/data
-      - --server.http.listen-addr=0.0.0.0:12345
-      - --stability.level=experimental # Enable all functionality
-    ports:
-      - "12345:12345"
