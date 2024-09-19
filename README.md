@@ -4,17 +4,16 @@
 
 The ultimate **qryn.js** docker demo w/ sample _logs, traces, metrics and profiles_ - _batteries included!_
 
+> ⭐ LogQL (Loki) ⭐ PromQL (Prometheus) ⭐ TempoQL (Tempo) ⭐ Pyroscope
+
 <br />
-<a href="https://qryn.metrico.in" target="_blank">
-<img src="https://github.com/metrico/qryn-docs/blob/main/docs/resources/images/qryn_logo_trans.png?raw=true" width=50 />&nbsp;
-<img src="https://user-images.githubusercontent.com/1423657/184496222-ca95d80c-906f-4c77-a963-86f0b27a56b0.png" width=50 />&nbsp;
-<img src="https://user-images.githubusercontent.com/1423657/184496304-4f35a365-efdc-4dca-9771-6b7b1deb9ae3.png" width=50 />&nbsp;
-<img src="https://user-images.githubusercontent.com/1423657/184496174-aca323dd-f40e-489a-a584-fa7348c0eab0.png" width=50 />&nbsp;
-<img src="https://user-images.githubusercontent.com/1423657/184496973-9f46e551-872d-4a25-877c-51a2e5f53e84.png" width=50 />&nbsp;
-<img src="https://user-images.githubusercontent.com/1423657/184494381-15d20f5d-3d52-411b-9064-dfd2ccea7c1c.png" width=50 />&nbsp;
-<img src="https://user-images.githubusercontent.com/1423657/184494438-17d7ceb0-a62a-4819-9b1c-43d7f0baf802.png" width=50 />&nbsp;
-<img src="https://avatars.githubusercontent.com/u/54801242?s=200&v=4" width=50 /><br/>
-</a>
+<a href="https://qryn.metrico.in" target="_blank"><img src="https://github.com/metrico/qryn-docs/blob/main/docs/resources/images/qryn_logo_trans.png?raw=true" width=60 /></a>&nbsp;
+<a href="https://qryn.metrico.in" target="_blank"><img src="https://user-images.githubusercontent.com/1423657/184496222-ca95d80c-906f-4c77-a963-86f0b27a56b0.png" width=50 /></a>&nbsp;
+<a href="https://qryn.metrico.in" target="_blank"><img src="https://user-images.githubusercontent.com/1423657/184496304-4f35a365-efdc-4dca-9771-6b7b1deb9ae3.png" width=50 /></a>&nbsp;
+<a href="https://qryn.metrico.in" target="_blank"><img src="https://user-images.githubusercontent.com/1423657/184496174-aca323dd-f40e-489a-a584-fa7348c0eab0.png" width=50 /></a>&nbsp;
+<a href="https://qryn.metrico.in" target="_blank"><img src="https://user-images.githubusercontent.com/1423657/184496973-9f46e551-872d-4a25-877c-51a2e5f53e84.png" width=50 /></a>&nbsp;
+<a href="https://qryn.metrico.in" target="_blank"><img src="https://user-images.githubusercontent.com/1423657/184494381-15d20f5d-3d52-411b-9064-dfd2ccea7c1c.png" width=50 /></a>&nbsp;
+<a href="https://qryn.metrico.in" target="_blank"><img src="https://user-images.githubusercontent.com/1423657/184494438-17d7ceb0-a62a-4819-9b1c-43d7f0baf802.png" width=50 /></a>
 
 <br>
 
@@ -57,5 +56,4 @@ Loving it? Learn how to send your own data using our [online documentation](http
 
 ![image](https://user-images.githubusercontent.com/1423657/186280231-8fbcf1f1-69b7-43fe-91ad-7e6ee8389978.png)
 
-![image](https://github.com/metrico/qryn-oss-demo/assets/1423657/5e59a0f5-5d54-4fdb-a44c-8086035fbceb)
-
+![image](https://github.com/user-attachments/assets/c8ca7868-70f6-461f-9f79-38e38d55ffdc)
