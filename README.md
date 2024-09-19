@@ -4,7 +4,7 @@
 
 The ultimate **qryn.js** docker demo w/ sample _logs, traces, metrics and profiles_ - _batteries included!_
 
-> ⭐ LogQL (Loki) ⭐ PromQL (Prometheus) ⭐ TempoQL (Tempo) ⭐ Pyroscope
+> Compatible with ⭐ LogQL (Loki) ⭐ PromQL (Prometheus) ⭐ Tempo ⭐ Pyroscope
 
 <br />
 <a href="https://qryn.metrico.in" target="_blank"><img src="https://github.com/metrico/qryn-docs/blob/main/docs/resources/images/qryn_logo_trans.png?raw=true" width=60 /></a>&nbsp;
