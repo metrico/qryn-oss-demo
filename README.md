@@ -1,8 +1,8 @@
 <a href="https://qryn.cloud" target="_blank"><img src='https://user-images.githubusercontent.com/1423657/218816262-e0e8d7ad-44d0-4a7d-9497-0d383ed78b83.png' width=250></a>
 
-# 🔎 _qryn oss polyglot demo_
+## 🔎 **qryn**: _all-in-one polyglot observability_
 
-The ultimate **qryn.js** docker demo w/ sample _logs, traces and metrics_ - _batteries included!_
+The ultimate **qryn.js** docker demo w/ sample _logs, traces, metrics and profiles_ - _batteries included!_
 
 <br />
 <a href="https://qryn.metrico.in" target="_blank">
