@@ -1,0 +1,149 @@
+volumes:
+    grafana_data: {}
+    clickhouse_data: {}
+
+networks:
+  qryn-oss:
+    driver: bridge
+
+services:
+  grafana:
+    image: grafana/grafana-oss:11.2.0
+    container_name: grafana
+    networks:
+      - qryn-oss
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_USERS_DEFAULT_THEME=light
+      - GF_EXPLORE_ENABLED=true
+      - GF_ALERTING_ENABLED=false
+      - GF_UNIFIED_ALERTING_ENABLED=true
+      - GF_FEATURE_TOGGLES_ENABLE=traceToMetrics,publicDashboards,tempoApmTable
+      - GF_INSTALL_PLUGINS=grafana-pyroscope-app,https://storage.googleapis.com/integration-artifacts/grafana-lokiexplore-app/grafana-lokiexplore-app-latest.zip;grafana-lokiexplore-app
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    depends_on:
+      - qryn
+
+  chproxy:
+    image: contentsquareplatform/chproxy:v1.25.0
+    container_name: chproxy
+    networks:
+      - qryn-oss
+    volumes:
+      - ./chproxy/config:/config
+      - ./chproxy/cache:/data/cache
+    ports:
+      - 9001:9001
+    command: -config /config/config.yaml
+    depends_on:
+      clickhouse-server:
+        condition: service_healthy
+    healthcheck:
+      test: curl 'http://127.0.0.1:9001/metrics'
+      interval: 2s
+      timeout: 20s
+      retries: 10
+
+  clickhouse-server:
+    image: clickhouse/clickhouse-server:24.1
+    container_name: clickhouse-server
+    hostname: clickhouse
+    restart: unless-stopped
+    networks:
+      - qryn-oss
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    environment:
+      - CLICKHOUSE_USER=qryn
+      - CLICKHOUSE_PASSWORD=demo
+    ports:
+      - 8123:8123
+      - 9000:9000
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', '127.0.0.1:8123/ping']
+      interval: 1s
+      timeout: 1s
+      retries: 30
+
+  qryn:
+    image: qxip/qryn:latest
+    container_name: qryn
+    hostname: qryn
+    pull_policy: always
+    restart: unless-stopped
+    networks:
+      - qryn-oss
+    expose:
+      - 3100
+    ports:
+      - "3100:3100"
+    environment:
+      - CLICKHOUSE_SERVER=clickhouse-server
+      - CLICKHOUSE_PORT=8123
+      - CLICKHOUSE_AUTH=qryn:demo
+      - CLICKHOUSE_DB=qryn
+      - NODE_OPTIONS="--max-old-space-size=4096"
+      - ALERTMAN_URL=http://alertman:9093
+      - FASTIFY_METRICS=true
+    depends_on:
+      chproxy:
+        condition: service_healthy
+      clickhouse-server:
+        condition: service_healthy
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    hostname: mailhog
+    networks:
+      - qryn-oss
+    expose:
+      - 1025
+      - 8025
+    ports:
+      - "8025:8025"
+      
+  alertman:
+    image: prom/alertmanager:latest
+    container_name: alertman
+    hostname: alertman
+    networks:
+      - qryn-oss
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    expose:
+      - 9093
+    ports:
+      - 9093:9093
+
+  otel-collector:
+    container_name: otel-collector
+    hostname: otel-collector
+    image: ghcr.io/metrico/qryn-otel-collector:0.0.5
+    networks:
+      - qryn-oss
+    volumes:
+      - ./otel/otel-collector-config.yaml:/etc/otel/config.yaml
+    ports:
+      - "3200:3100"     # Loki/Logql HTTP receiver
+      - "3201:3200"     # Loki/Logql gRPC receiver
+      - "8088:8088"     # Splunk HEC receiver
+      - "5514:5514"     # Syslog TCP Rereceiverceiver
+      - "24224:24224"   # Fluent Forward receiver
+      - "4317:4317"     # OTLP gRPC receiver
+      - "4318:4318"     # OTLP HTTP receiver
+      - "14250:14250"   # Jaeger gRPC receiver
+      - "14268:14268"   # Jaeger thrift HTTP receiver
+      - "9411:9411"     # Zipkin Trace receiver
+      - "11800:11800"   # Skywalking gRPC receiver
+      - "12800:12800"   # Skywalking HTTP receiver
+      - "8086:8086"     # InfluxDB Line proto HTTP
+      - "8062:8062"     # Pyroscope jprof
+    restart: on-failure
