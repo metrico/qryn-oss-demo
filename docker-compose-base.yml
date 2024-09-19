@@ -30,6 +30,11 @@ services:
       - 3000:3000
     depends_on:
       - qryn
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   chproxy:
     image: contentsquareplatform/chproxy:v1.25.0
@@ -50,6 +55,11 @@ services:
       interval: 2s
       timeout: 20s
       retries: 10
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   clickhouse-server:
     image: clickhouse/clickhouse-server:24.1
@@ -71,6 +81,11 @@ services:
       interval: 1s
       timeout: 1s
       retries: 30
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   qryn:
     image: qxip/qryn:latest
@@ -97,6 +112,11 @@ services:
         condition: service_healthy
       clickhouse-server:
         condition: service_healthy
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   mailhog:
     image: mailhog/mailhog:latest
@@ -109,6 +129,11 @@ services:
       - 8025
     ports:
       - "8025:8025"
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
       
   alertman:
     image: prom/alertmanager:latest
@@ -122,6 +147,11 @@ services:
       - 9093
     ports:
       - 9093:9093
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   otel-collector:
     container_name: otel-collector
@@ -147,3 +177,8 @@ services:
       - "8086:8086"     # InfluxDB Line proto HTTP
       - "8062:8062"     # Pyroscope jprof
     restart: on-failure
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
