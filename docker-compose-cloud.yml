@@ -24,6 +24,11 @@ services:
       - 3000:3000
     depends_on:
       - qryn
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   qryn:
     image: qxip/qryn:latest
@@ -40,6 +45,11 @@ services:
       - CLICKHOUSE_AUTH=default:YOURPASSWORD
       - NODE_OPTIONS="--max-old-space-size=4096"
       - ALERTMAN_URL=http://alertman:9093
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   fluxpipe:
     image: ghcr.io/metrico/fluxpipe:latest
@@ -51,6 +61,11 @@ services:
       - "8086:8086"
     depends_on:
       - qryn
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   vector:
     image: timberio/vector:latest-alpine
@@ -60,6 +75,11 @@ services:
       - ./vector/vector.toml:/etc/vector/vector.toml:ro
     depends_on:
       - qryn
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   exporter:
     build: ./dummy-exporter
@@ -69,6 +89,11 @@ services:
       - "9090:8080"
     depends_on:
       - qryn
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   dummy-server:
     build: ./dummy-server
@@ -79,6 +104,11 @@ services:
       - 80:80
     depends_on:
       - qryn
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   mailhog:
     image: mailhog/mailhog:latest
@@ -89,6 +119,11 @@ services:
       - 8025
     ports:
       - "8025:8025"
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
       
   alertman:
     image: prom/alertmanager:latest
@@ -100,3 +135,8 @@ services:
       - 9093
     ports:
       - 9093:9093
+    logging:
+      driver: "local"
+      options:
+        max-size: "10m"
+        max-file: "5"
