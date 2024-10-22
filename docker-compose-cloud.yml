@@ -5,7 +5,7 @@ volumes:
 
 services:
   grafana:
-    image: grafana/grafana-oss:latest
+    image: grafana/grafana-oss:11.2.3
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
