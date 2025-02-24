@@ -37,7 +37,7 @@ services:
         max-file: "5"
 
   clickhouse-server:
-    image: clickhouse/clickhouse-server:24.1
+    image: clickhouse/clickhouse-server:24.9.1-alpine
     container_name: clickhouse-server
     hostname: clickhouse
     restart: unless-stopped
