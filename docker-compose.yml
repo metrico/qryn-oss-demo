@@ -77,7 +77,7 @@ services:
       - "3100:3100"
     environment:
       - CLICKHOUSE_SERVER=clickhouse-server
-      - CLICKHOUSE_PORT=8123
+      - CLICKHOUSE_PORT=9000
       - CLICKHOUSE_AUTH=qryn:demo
       - CLICKHOUSE_DB=qryn
       - NODE_OPTIONS="--max-old-space-size=4096"
