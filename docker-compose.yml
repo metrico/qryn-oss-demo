@@ -3,7 +3,7 @@ volumes:
     clickhouse_data: {}
 
 networks:
-  qryn-oss:
+  gigapipe-oss:
     driver: bridge
 
 services:
@@ -11,7 +11,7 @@ services:
     image: grafana/grafana-oss:11.5.0
     container_name: grafana
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
@@ -29,7 +29,7 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - qryn
+      - gigapipe
     logging:
       driver: "local"
       options:
@@ -42,12 +42,12 @@ services:
     hostname: clickhouse
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - ./clickhouse/opentelemetry_zipkin.sql:/docker-entrypoint-initdb.d/opentelemetry_zipkin.sql
     environment:
-      - CLICKHOUSE_USER=qryn
+      - CLICKHOUSE_USER=gigapipe
       - CLICKHOUSE_PASSWORD=demo
     ports:
       - 8123:8123
@@ -63,14 +63,14 @@ services:
         max-size: "10m"
         max-file: "5"
 
-  qryn:
-    image: ghcr.io/metrico/qryn-aio-oos:latest
-    container_name: qryn
-    hostname: qryn
+  gigapipe:
+    image: ghcr.io/metrico/gigapipe:latest
+    container_name: gigapipe
+    hostname: gigapipe
     pull_policy: always
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     expose:
       - 3100
     ports:
@@ -78,7 +78,7 @@ services:
     environment:
       - CLICKHOUSE_SERVER=clickhouse-server
       - CLICKHOUSE_PORT=9000
-      - CLICKHOUSE_AUTH=qryn:demo
+      - CLICKHOUSE_AUTH=gigapipe:demo
       - CLICKHOUSE_DB=qryn
       - PORT=3100
       - NODE_OPTIONS="--max-old-space-size=4096"
@@ -97,11 +97,11 @@ services:
     container_name: vector
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - ./vector/vector.toml:/etc/vector/vector.toml:ro
     depends_on:
-      - qryn
+      - gigapipe
     logging:
       driver: "local"
       options:
@@ -113,11 +113,11 @@ services:
     container_name: exporter
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     ports:
       - "9090:8080"
     depends_on:
-      - qryn
+      - gigapipe
     logging:
       driver: "local"
       options:
@@ -129,12 +129,12 @@ services:
     container_name: dummy-server
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     ports:
       - 4000:4000
       - 80:80
     depends_on:
-      - qryn
+      - gigapipe
     logging:
       driver: "local"
       options:
@@ -146,7 +146,7 @@ services:
     hostname: otel-collector
     image: ghcr.io/metrico/qryn-otel-collector:0.0.5
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - ./otel/otel-collector-config.yaml:/etc/otel/config.yaml
     ports:
@@ -178,16 +178,16 @@ services:
     pull_policy: always
     restart: on-failure
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - ./alloy/config.alloy:/etc/alloy/config.alloy
     environment:
-      REMOTE_WRITE_HOST: qryn:3100
-      LOKI_HOST: qryn:3100
-      TEMPO_HOST: http://qryn:3100
+      REMOTE_WRITE_HOST: gigapipe:3100
+      LOKI_HOST: gigapipe:3100
+      TEMPO_HOST: http://gigapipe:3100
       PYROSCOPE_HOST: otel-collector:8062
     depends_on:
-      - qryn
+      - gigapipe
       - otel-collector
     command:
       - run
