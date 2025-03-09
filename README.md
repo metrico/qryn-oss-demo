@@ -4,7 +4,7 @@
 
 # <img src='https://user-images.githubusercontent.com/1423657/218816262-e0e8d7ad-44d0-4a7d-9497-0d383ed78b83.png' style="margin-left:-10px" width=28 /> [gigapipe: polyglot observability](https://gigapipe.com)
 
-The ultimate **gigapipe** opensource docker demo w/ sample _logs, traces, metrics and profiles_ - _batteries included!_
+The ultimate **gigapipe oss** demo w/ sample _logs, traces, metrics and profiles_ - _batteries included!_
 
 > Compatible with ⭐ LogQL (Loki) ⭐ PromQL (Prometheus) ⭐ Tempo ⭐ Pyroscope
 
@@ -26,7 +26,7 @@ The ultimate **gigapipe** opensource docker demo w/ sample _logs, traces, metric
 ### Usage
 
 #### Setup
-Clone the repository and launch the **qryn** polyglot demo using _docker-compose_
+Clone the repository and launch the **gigapipe** polyglot demo using _docker-compose_
 
 ```bash
 docker-compose pull 
