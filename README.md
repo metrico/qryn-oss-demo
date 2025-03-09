@@ -1,8 +1,10 @@
-<a href="https://qryn.cloud" target="_blank"><img src='https://user-images.githubusercontent.com/1423657/218816262-e0e8d7ad-44d0-4a7d-9497-0d383ed78b83.png' width=250></a>
+<a href="https://gigapipe.com" target="_blank">
+<img src='https://github.com/user-attachments/assets/fc8c7ca9-7a18-403d-b2a6-17899a534d33' style="margin-left:-10px;width:200px;" width=200/>
+</a>
 
-## 🔎 **qryn**: _all-in-one polyglot observability_
+# <img src='https://avatars.githubusercontent.com/u/76224143?s=400&u=4e207cf756a7146392f9f04c6beb3940a417369d&v=4' style="margin-left:-10px" width=28 /> [gigapipe: polyglot observability](https://gigapipe.com)
 
-The ultimate **qryn.js** docker demo w/ sample _logs, traces, metrics and profiles_ - _batteries included!_
+The ultimate **gigapipe oss** demo w/ sample _logs, traces, metrics and profiles_ - _batteries included!_
 
 > Compatible with ⭐ LogQL (Loki) ⭐ PromQL (Prometheus) ⭐ Tempo ⭐ Pyroscope
 
@@ -24,7 +26,7 @@ The ultimate **qryn.js** docker demo w/ sample _logs, traces, metrics and profil
 ### Usage
 
 #### Setup
-Clone the repository and launch the **qryn** polyglot demo using _docker-compose_
+Clone the repository and launch the **gigapipe** polyglot demo using _docker-compose_
 
 ```bash
 docker-compose pull 

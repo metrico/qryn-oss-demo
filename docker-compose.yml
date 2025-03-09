@@ -3,15 +3,15 @@ volumes:
     clickhouse_data: {}
 
 networks:
-  qryn-oss:
+  gigapipe-oss:
     driver: bridge
 
 services:
   grafana:
-    image: grafana/grafana-oss:10.4.12
+    image: grafana/grafana-oss:11.5.0
     container_name: grafana
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
@@ -29,32 +29,7 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - qryn
-    logging:
-      driver: "local"
-      options:
-        max-size: "10m"
-        max-file: "5"
-
-  chproxy:
-    image: contentsquareplatform/chproxy:v1.25.0
-    container_name: chproxy
-    networks:
-      - qryn-oss
-    volumes:
-      - ./chproxy/config:/config
-      - ./chproxy/cache:/data/cache
-    ports:
-      - 9001:9001
-    command: -config /config/config.yaml
-    depends_on:
-      clickhouse-server:
-        condition: service_healthy
-    healthcheck:
-      test: curl 'http://127.0.0.1:9001/metrics'
-      interval: 2s
-      timeout: 20s
-      retries: 10
+      - gigapipe
     logging:
       driver: "local"
       options:
@@ -62,17 +37,17 @@ services:
         max-file: "5"
 
   clickhouse-server:
-    image: clickhouse/clickhouse-server:24.1
+    image: clickhouse/clickhouse-server:24.9.1-alpine
     container_name: clickhouse-server
     hostname: clickhouse
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - clickhouse_data:/var/lib/clickhouse
       - ./clickhouse/opentelemetry_zipkin.sql:/docker-entrypoint-initdb.d/opentelemetry_zipkin.sql
     environment:
-      - CLICKHOUSE_USER=qryn
+      - CLICKHOUSE_USER=gigapipe
       - CLICKHOUSE_PASSWORD=demo
     ports:
       - 8123:8123
@@ -88,29 +63,27 @@ services:
         max-size: "10m"
         max-file: "5"
 
-  qryn:
-    image: qxip/qryn:latest
-    container_name: qryn
-    hostname: qryn
+  gigapipe:
+    image: ghcr.io/metrico/gigapipe:latest
+    container_name: gigapipe
+    hostname: gigapipe
     pull_policy: always
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     expose:
       - 3100
     ports:
       - "3100:3100"
     environment:
       - CLICKHOUSE_SERVER=clickhouse-server
-      - CLICKHOUSE_PORT=8123
-      - CLICKHOUSE_AUTH=qryn:demo
+      - CLICKHOUSE_PORT=9000
+      - CLICKHOUSE_AUTH=gigapipe:demo
       - CLICKHOUSE_DB=qryn
+      - PORT=3100
       - NODE_OPTIONS="--max-old-space-size=4096"
-      - ALERTMAN_URL=http://alertman:9093
       - FASTIFY_METRICS=true
     depends_on:
-      chproxy:
-        condition: service_healthy
       clickhouse-server:
         condition: service_healthy
     logging:
@@ -124,11 +97,11 @@ services:
     container_name: vector
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - ./vector/vector.toml:/etc/vector/vector.toml:ro
     depends_on:
-      - qryn
+      - gigapipe
     logging:
       driver: "local"
       options:
@@ -140,11 +113,11 @@ services:
     container_name: exporter
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     ports:
       - "9090:8080"
     depends_on:
-      - qryn
+      - gigapipe
     logging:
       driver: "local"
       options:
@@ -156,59 +129,24 @@ services:
     container_name: dummy-server
     restart: unless-stopped
     networks:
-      - qryn-oss
+      - gigapipe-oss
     ports:
       - 4000:4000
       - 80:80
     depends_on:
-      - qryn
-    logging:
-      driver: "local"
-      options:
-        max-size: "10m"
-        max-file: "5"
-
-  mailhog:
-    image: mailhog/mailhog:latest
-    container_name: mailhog
-    hostname: mailhog
-    networks:
-      - qryn-oss
-    expose:
-      - 1025
-      - 8025
-    ports:
-      - "8025:8025"
+      - gigapipe
     logging:
       driver: "local"
       options:
         max-size: "10m"
         max-file: "5"
       
-  alertman:
-    image: prom/alertmanager:latest
-    container_name: alertman
-    hostname: alertman
-    networks:
-      - qryn-oss
-    volumes:
-      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
-    expose:
-      - 9093
-    ports:
-      - 9093:9093
-    logging:
-      driver: "local"
-      options:
-        max-size: "10m"
-        max-file: "5"
-
   otel-collector:
     container_name: otel-collector
     hostname: otel-collector
     image: ghcr.io/metrico/qryn-otel-collector:0.0.5
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - ./otel/otel-collector-config.yaml:/etc/otel/config.yaml
     ports:
@@ -240,16 +178,16 @@ services:
     pull_policy: always
     restart: on-failure
     networks:
-      - qryn-oss
+      - gigapipe-oss
     volumes:
       - ./alloy/config.alloy:/etc/alloy/config.alloy
     environment:
-      REMOTE_WRITE_HOST: qryn:3100
-      LOKI_HOST: qryn:3100
-      TEMPO_HOST: http://qryn:3100
+      REMOTE_WRITE_HOST: gigapipe:3100
+      LOKI_HOST: gigapipe:3100
+      TEMPO_HOST: http://gigapipe:3100
       PYROSCOPE_HOST: otel-collector:8062
     depends_on:
-      - qryn
+      - gigapipe
       - otel-collector
     command:
       - run
